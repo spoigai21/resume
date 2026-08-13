@@ -1,0 +1,47 @@
+# Private working notes — candid analysis, credibility critique, and job-search
+# strategy. Not for a public repo.
+RESUME-STRATEGY.md
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.xdv
+
+# Word / Office lock and temp files
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+.~lock.*#
+
+# Python (if you script anything around the resume)
+__pycache__/
+*.py[cod]
+v/
+venv/
+.venv/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Note: PDFs and .docx are intentionally NOT ignored — they are the deliverables
+# this repo exists to track.
