@@ -1,3 +1,21 @@
+%% ============================================================================
+%% NETFLIX VARIANT -- SWE Intern, Summer 2027.  Re-forked from ShayanPoigaiResume1.tex
+%% after the front-loading rewrite. Diffs vs. master, all deliberate:
+%%
+%%  1. Education line sells the conversion timeline rather than stating a
+%%     scheduling constraint. Referral reports this cycle is run as a full-time
+%%     pipeline; Dec 2027 grad -> full-time Jan 2028 is ~9 months ahead of a
+%%     typical June 2028 grad. Major GPA 4.0 added.
+%%  2. Skills lead with Netflix's actual stack: Java, Spring Boot, AWS.
+%%     Spring Cloud Netflix originated there and the platform runs on AWS.
+%%     Nothing added that isn't already true elsewhere on the page.
+%%
+%% NOTE: Adorus title is now "Software Engineer" in the MASTER too, so that is
+%% no longer a Netflix-specific diff.
+%%
+%% Kern/font parsing fixes (\nk, \pipe, \textasciitilde, T1+lmodern) inherited.
+%% Re-run the pypdf check in RESUME-STRATEGY.md sec. 4 after compiling.
+%% ============================================================================
 \documentclass[letterpaper,10pt]{article}
 
 \usepackage{latexsym}
@@ -119,7 +137,7 @@
   \resumeSubHeadingListStart
     \resumeSubheading
       {Santa Clara University --- B.S. in Computer Science}{Expected December 2027}
-      {GPA: 3.9}{Available Summer 2027 (Fall 2027 term remaining)}
+      {GPA: 3.9 (Major GPA: 4.0)}{Summer 2027 intern \pipe{} B.S. complete Dec 2027, full-time Jan 2028}
   \resumeSubHeadingListEnd
 
 % The availability line answers the conferral/eligibility gate directly -- the
@@ -262,9 +280,9 @@
 \section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Languages}{: C++, Python, Java, JavaScript, SQL} \\
-     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, REST/RESTful APIs, unit \& integration testing, Stripe} \\
-     \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
+     \textbf{Languages}{: Java, Python, C++, JavaScript, SQL} \\
+     \textbf{F\nk rameworks \& T\nk ools}{: Spring Boot, React.js, Node.js, FastAPI, REST/RESTful APIs, Docker (containers), Linux, Git, CI/CD, unit \& integration testing, Vercel, Render, Qt, Stripe} \\
+     \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, S3, CloudFront, Cognito, Bedrock), PostgreSQL, MySQL, Redis (distributed caching), DynamoDB (NoSQL), ChromaDB} \\
      \textbf{AI / ML}{: Machine Learning, NLP, RAG, MCP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
      \textbf{CS F\nk undamentals}{: Data Structures and Algorithms, Object-Oriented Design}
     }}

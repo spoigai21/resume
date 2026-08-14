@@ -1,3 +1,30 @@
+%% ============================================================================
+%% NOTION VARIANT -- SWE Intern, Summer 2027 (NY or SF, onsite).
+%% Forked from ShayanPoigaiResume1.tex.
+%%
+%% Eligibility: JD requires graduating BEFORE Summer 2028. Dec 2027 clears it.
+%% Two windows offered; SCU quarters fit June 14 - Sept 3, so that is stated.
+%%
+%% Research basis (notion.com/blog/topic/tech, Aug 2026) -- what they actually
+%% build, which is more specific than the JD:
+%%   - "Two years of vector search at Notion: 10x scale, 1/10th cost"
+%%   - an AI teammate automating alert triage; security model behind Custom Agents
+%%   - lexical search reindexer rebuilt on a Spark-native pipeline
+%%   - multi-region data systems
+%% => agents, vector search, and cost-at-scale are the themes. Skills reordered
+%%    to put LLM agents / MCP / RAG / vector search first, and Postgres + Redis
+%%    ahead of the AWS service list.
+%%
+%% JD names TypeScript twice (qualifications AND nice-to-haves). It is NOT on
+%% this resume because it is not yet true -- see the note in the handoff.
+%% Do not add it until a project is actually converted.
+%%
+%% Co-Founder RESTORED here (unlike master/Netflix): Notion is a builder culture
+%% and the JD screens on ownership and user-first judgment. Engineering leads the
+%% title string so it still normalizes to an IC node.
+%%
+%% Kern/font parsing fixes inherited from master. Re-run the sec. 4 pypdf check.
+%% ============================================================================
 \documentclass[letterpaper,10pt]{article}
 
 \usepackage{latexsym}
@@ -119,7 +146,7 @@
   \resumeSubHeadingListStart
     \resumeSubheading
       {Santa Clara University --- B.S. in Computer Science}{Expected December 2027}
-      {GPA: 3.9}{Available Summer 2027 (Fall 2027 term remaining)}
+      {GPA: 3.9 (Major GPA: 4.0)}{Available June 14 -- Sept 3, 2027 \pipe{} B.S. December 2027}
   \resumeSubHeadingListEnd
 
 % The availability line answers the conferral/eligibility gate directly -- the
@@ -160,7 +187,7 @@
     % Title reordered so both the whole-string embedding and the split-on-"&"
     % first token resolve into the IC cluster instead of the founder cluster.
     \resumeSubheading
-      {Software Engineer}{May 2026 -- Present}
+      {Software Engineer \& Co-\nk Founder}{May 2026 -- Present}
       {Adorus (adorusjewels.com)}{}
       \resumeItemListStart
         % CUT: "Sole developer on a 4-person founding team, translating co-founder and
@@ -262,10 +289,10 @@
 \section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Languages}{: C++, Python, Java, JavaScript, SQL} \\
-     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, REST/RESTful APIs, unit \& integration testing, Stripe} \\
-     \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
-     \textbf{AI / ML}{: Machine Learning, NLP, RAG, MCP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
+     \textbf{Languages}{: Python, JavaScript, Java, C++, SQL} \\
+     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, FastAPI, Spring Boot, REST/RESTful APIs, unit \& integration testing, Docker (containers), Linux, Git, CI/CD, Vercel, Render, Qt, Stripe} \\
+     \textbf{Cloud \& Data}{: PostgreSQL, MySQL, Redis (distributed caching), ChromaDB (vector store), DynamoDB (NoSQL), A\nk WS (EC2, RDS, S3, CloudFront, Cognito, Bedrock)} \\
+     \textbf{AI / ML}{: LLM agents, MCP (Model Context Protocol), RAG, vector embeddings and semantic search, Machine Learning, NLP, Ollama, OpenWebUI, NumPy, Pandas, topic modeling (BERTopic, LDA, NMF)} \\
      \textbf{CS F\nk undamentals}{: Data Structures and Algorithms, Object-Oriented Design}
     }}
  \end{itemize}
