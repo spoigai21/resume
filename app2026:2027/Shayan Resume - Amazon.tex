@@ -1,3 +1,42 @@
+%==============================================================================
+%  AMAZON VARIANT -- SDE Internship (US). Forked from ShayanPoigaiResume1.tex.
+%
+%  Deltas from master, and the reason for each:
+%   1. HerbsPro "Present" -> "August 2026". The role ended; "Present" is now false.
+%      Consequence: the live titles are now Coutera "Forward Deployed Engineer"
+%      (Aug 2026 - Present) and Adorus "Software Engineer" (May 2026 - Present).
+%      Both normalize to IC engineering nodes, so the founder-cluster problem the
+%      master's reorder was built to avoid does NOT reappear. Verified, not assumed.
+%   1b. Coutera "Incoming" -> "August 2026 - Present"; still no bullets, by design.
+%      HerbsPro deliberately keeps the top slot even though Coutera started later:
+%      this application selects the DATABASE specialization, and the HerbsPro MySQL
+%      and Redis bullets are the database story. A bulletless one-liner on top would
+%      bury it. Revisit the ordering once Coutera has real bullets.
+%   2. "Claude Code" restored to Frameworks & Tools. This is the documented exception
+%      in the master: Amazon's JD lists "AI tools for development productivity" as a
+%      preferred qualification verbatim. Do NOT port this back to the general version.
+%   3. Availability line carries literal dates instead of "Summer 2027". They are
+%      derived from SCU's published 2026-27 calendar: Spring 2027 finals end June 10,
+%      Fall 2027 begins mid-September. June 14 - Sept 3 is exactly 12 work weeks and
+%      answers Amazon's "40 hours/week, 12-week commitment" qualification directly.
+%      WINTER ALTERNATIVE, if he selects Winter instead -- swap the 4th argument to:
+%        {Available January 4 -- March 26, 2027; Spring and Fall 2027 terms remaining}
+%      Winter 2027 classes run Jan 4 - Mar 19 and Spring 2027 opens Mar 29, so that
+%      window is 12 work weeks that ends the Friday before spring quarter starts.
+%   4. Tax bullet now says "production". The JD lists "troubleshooting and resolving
+%      production issues" as a responsibility; this bullet already described one.
+%
+%  DELIBERATELY NOT ADDED -- each is a JD keyword with no true claim behind it yet.
+%  Add only if the answer is genuinely yes; see the questions raised alongside this file:
+%    - "code reviews", "technical documentation" (no evidence either happened)
+%    - "agile", "SDLC" (ceremony vocabulary; asserting it invites a question he loses)
+%    - "open-source contributions" (public repos are NOT contributions to open source)
+%    - "on-call", "monitoring", "fault-tolerant" (no alerting or failover work shown)
+%
+%  No LaTeX toolchain on this machine -- compile in Overleaf with pdflatex, then run
+%  the parse check at the bottom of this file. It must print an empty list.
+%==============================================================================
+
 \documentclass[letterpaper,10pt]{article}
 
 \usepackage{latexsym}
@@ -119,7 +158,7 @@
   \resumeSubHeadingListStart
     \resumeSubheading
       {Santa Clara University --- B.S. in Computer Science}{Expected December 2027}
-      {GPA: 3.9}{Available Summer 2027 (Fall 2027 term remaining)}
+      {GPA: 3.9}{Available June 14 -- September 3, 2027; Fall 2027 term remaining}
   \resumeSubHeadingListEnd
 
 % The availability line answers the conferral/eligibility gate directly -- the
@@ -135,18 +174,15 @@
     % Leading with "Co-Founder" put your CURRENT title in the founder/executive
     % cluster, which makes trajectory models predict CTO instead of intern.
     \resumeSubheading
-      {Software Engineering Intern}{June 2026 -- Present}
+      {Software Engineering Intern}{June 2026 -- August 2026}
       {HerbsPro}{}
       \resumeItemListStart
         % NOTE: the "30% reduction in manual WMS work" claim is removed. You started
         % in June; measuring that needs a baseline predating your tenure, and an
         % unsourced number that collapses under questioning takes every other metric
         % on this page down with it.
-        % ACTION: replace the bracketed clause below with the specific hard problem you
-        % actually solved -- idempotent writes so a retried agent call can't double-issue
-        % a ticket? constrained tool schemas so agents can't allocate against warehouses
-        % that don't stock the SKU? transaction boundaries? legacy schema mapping?
-        % That detail is worth ten times the percentage you just removed.
+        % RESOLVED Aug 18 2026: shipping these two bullets as-is, no added detail.
+        % Both remaining numbers are measurable and defensible, which is the bar.
         \resumeItem{Cut MySQL query volume 60\% and product API p50 latency from 200\,ms to 90\,ms with a \textbf{distributed} cache-aside Redis layer using event-driven invalidation to hold cache coherence across a 50,000+ SKU catalog.}
         % Both numbers here are legitimately measurable, unlike the 30% that was cut.
         % Be ready to say where each came from: the 60% from slow-query counts or
@@ -178,7 +214,7 @@
         % every number on the page. Also sync GPA (3.9 here vs "Major GPA 4.0" elsewhere)
         % and grad date ("December 2027" here vs "Fall 2027" elsewhere).
         \resumeItem{Shipped AI virtual try-on at \textasciitilde\$0.05/image, storing zero customer photos, after benchmarking 5 approaches (A\nk WS Bedrock Nova Canvas, Stability, Rekognition, Gemini) on identity preservation, product fidelity, latency, and cost.}
-        \resumeItem{Fixed a revenue-affecting tax bug that folded tax into shipping totals, re-sourcing authoritative amounts from Stripe's REST API and backing the fix with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment production failure.}
+        \resumeItem{Diagnosed and fixed a revenue-affecting \textbf{production} tax bug that folded tax into shipping totals, re-sourcing authoritative amounts from Stripe's REST API and backing the fix with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment production failure.}
         \resumeItem{Automated the post-purchase lifecycle across 6 order states with server-verified Shippo tracking webhooks, triggering transactional emails via Resend and decrementing per-variant inventory on paid orders.}
         \resumeItem{Locked a private S3 image pipeline behind CloudFront with Origin Access Control, invalidation on delete, and least-privilege IAM; built 35 REST endpoints on Java Spring Boot, PostgreSQL (A\nk WS RDS), and a React (Vite) front end across 5 A\nk WS services running \textasciitilde\$40/month with GitHub Actions CI, Cognito \textbf{authentication and authorization} (customer/admin), and PCI-compliant Stripe checkout.}
       \resumeItemListEnd
@@ -187,10 +223,11 @@
     % nothing to claim, and an empty role with invented accomplishments is worse
     % than no role at all. The signal here is simply that an outside company
     % attached a title to you, which is the one thing every other entry lacks.
-    % SET THE REAL START MONTH in place of "Incoming" once you know it, and add
-    % 1-2 real bullets about six weeks in -- then this becomes a genuine entry.
+    % Start month set (Aug 2026). STILL a one-liner on purpose -- he is days in, so
+    % there is nothing true to claim yet. Revisit ~mid-Oct 2026 and add 1-2 real
+    % bullets; that is when this stops being a title and becomes a genuine entry.
     \resumeSubheadingOneLine
-      {Forward Deployed Engineer (Part-Time)}{Coutera}{Incoming}
+      {Forward Deployed Engineer (Part-Time)}{Coutera}{August 2026 -- Present}
 
     \resumeSubheading
       {AI/ML Research Assistant}{Dec 2025 -- June 2026}
@@ -263,7 +300,7 @@
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
      \textbf{Languages}{: C++, Python, Java, JavaScript, SQL} \\
-     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, REST/RESTful APIs, unit \& integration testing, Stripe} \\
+     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, Claude Code, REST/RESTful APIs, unit \& integration testing, Stripe} \\
      \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
      \textbf{AI / ML}{: Machine Learning, NLP, RAG, MCP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
      \textbf{CS F\nk undamentals}{: Data Structures and Algorithms, Object-Oriented Design}
