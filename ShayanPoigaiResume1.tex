@@ -1,40 +1,38 @@
 %==============================================================================
-%  AMAZON VARIANT -- SDE Internship (US). Forked from ShayanPoigaiResume1.tex.
+%  SYSTEMS VARIANT -- forked from the master after the Amazon build.
 %
-%  Deltas from master, and the reason for each:
-%   1. HerbsPro "Present" -> "August 2026". The role ended; "Present" is now false.
-%      Consequence: the live titles are now Coutera "Forward Deployed Engineer"
-%      (Aug 2026 - Present) and Adorus "Software Engineer" (May 2026 - Present).
-%      Both normalize to IC engineering nodes, so the founder-cluster problem the
-%      master's reorder was built to avoid does NOT reappear. Verified, not assumed.
-%   1b. Coutera "Incoming" -> "August 2026 - Present"; still no bullets, by design.
-%      HerbsPro deliberately keeps the top slot even though Coutera started later:
-%      this application selects the DATABASE specialization, and the HerbsPro MySQL
-%      and Redis bullets are the database story. A bulletless one-liner on top would
-%      bury it. Revisit the ordering once Coutera has real bullets.
-%   2. "Claude Code" restored to Frameworks & Tools. This is the documented exception
-%      in the master: Amazon's JD lists "AI tools for development productivity" as a
-%      preferred qualification verbatim. Do NOT port this back to the general version.
-%   3. Availability line carries literal dates instead of "Summer 2027". They are
-%      derived from SCU's published 2026-27 calendar: Spring 2027 finals end June 10,
-%      Fall 2027 begins mid-September. June 14 - Sept 3 is exactly 12 work weeks and
-%      answers Amazon's "40 hours/week, 12-week commitment" qualification directly.
-%      WINTER ALTERNATIVE, if he selects Winter instead -- swap the 4th argument to:
-%        {Available January 4 -- March 26, 2027; Spring and Fall 2027 terms remaining}
-%      Winter 2027 classes run Jan 4 - Mar 19 and Spring 2027 opens Mar 29, so that
-%      window is 12 work weeks that ends the Friday before spring quarter starts.
-%   4. Tax bullet now says "production". The JD lists "troubleshooting and resolving
-%      production issues" as a responsibility; this bullet already described one.
+%  PROBLEM THIS FILE SOLVES: two Adorus bullets made the page read as a CRUD web
+%  app -- REST endpoints, Stripe, auth, S3 uploads, an ORM over Postgres. That is
+%  the shape of every portfolio project, so a reader pattern-matches to it and the
+%  ceiling drops no matter how good the rest is. NOT a domain problem: e-commerce
+%  is fine, and for Amazon it is an asset. A register problem.
 %
-%  DELIBERATELY NOT ADDED -- each is a JD keyword with no true claim behind it yet.
-%  Add only if the answer is genuinely yes; see the questions raised alongside this file:
-%    - "code reviews", "technical documentation" (no evidence either happened)
-%    - "agile", "SDLC" (ceremony vocabulary; asserting it invites a question he loses)
-%    - "open-source contributions" (public repos are NOT contributions to open source)
-%    - "on-call", "monitoring", "fault-tolerant" (no alerting or failover work shown)
+%  RULE APPLIED THROUGHOUT: lead with the DECISION, not the product. Same facts,
+%  same numbers, nothing invented -- only what is foregrounded changes.
 %
-%  No LaTeX toolchain on this machine -- compile in Overleaf with pdflatex, then run
-%  the parse check at the bottom of this file. It must print an empty list.
+%  Deltas from master:
+%   1. Adorus "automated the post-purchase lifecycle" -> named as a 6-state order
+%      machine driven by untrusted external callbacks. Identical work; "automated
+%      the lifecycle" is how a PM describes it, a state machine is how it is built.
+%   2. The 13-technology stack-dump bullet is split. The access-control and cache
+%      -invalidation decision leads on its own; scope survives as a second, shorter
+%      bullet instead of being the point. Every technology in the dump already
+%      appears verbatim under Technical Skills, so nothing is lost.
+%   3. Skills: REVERTED to the original grouping at his request. The "Systems" row
+%      and the CS Fundamentals row are both gone -- coursework covers the latter.
+%      Quantum kept as its own row (Qiskit, IBM Quantum) even though the Kuhn Poker
+%      project that proved it was cut. See the note at the Skills block.
+%   4. Bullets tightened ~700 chars across all 13 to reach one page. Nothing factual
+%      was dropped, only the qualifier layer. The Netflix reference resumes state a
+%      thing once per bullet; that is the standard being matched.
+%
+%  THE THROUGH-LINE THIS CREATES: cache-aside invalidation at HerbsPro, CDN edge
+%  invalidation at Adorus, and the repost-dedup key on Internship Monitor are all
+%  the same problem -- knowing when cached or duplicated state has gone stale. That
+%  reads as a person with a systems instinct rather than three unrelated jobs. If
+%  asked "what are you good at," this is the answer, and it is genuinely true.
+%
+%  Compile with pdflatex, then run the parse check at the bottom. Must print [].
 %==============================================================================
 
 \documentclass[letterpaper,10pt]{article}
@@ -158,7 +156,15 @@
   \resumeSubHeadingListStart
     \resumeSubheading
       {Santa Clara University --- B.S. in Computer Science}{Expected December 2027}
-      {GPA: 3.9}{Available June 14 -- September 3, 2027; Fall 2027 term remaining}
+      {GPA: 3.9}{Available Summer 2027 (Fall 2027 term remaining)}
+      % Coursework line added to answer the one gap the reframing cannot: the systems
+      % signal on this page is all self-taught. Operating Systems leads deliberately --
+      % it is the course a reader scans for. In progress Fall 2026, complete before any
+      % January interview, so listing it is accurate for an enrolled student. NOTE: once
+      % it is here, expect questions on scheduling, virtual memory, and deadlock.
+      \resumeItemListStart
+        \resumeItem{\textbf{Relevant Coursework}: Operating Systems, Advanced C++, Advanced Algorithms, Data Structures \& Algorithms, Theory of Automata, Discrete Mathematics}
+      \resumeItemListEnd
   \resumeSubHeadingListEnd
 
 % The availability line answers the conferral/eligibility gate directly -- the
@@ -183,21 +189,27 @@
         % on this page down with it.
         % RESOLVED Aug 18 2026: shipping these two bullets as-is, no added detail.
         % Both remaining numbers are measurable and defensible, which is the bar.
-        \resumeItem{Cut MySQL query volume 60\% and product API p50 latency from 200\,ms to 90\,ms with a \textbf{distributed} cache-aside Redis layer using event-driven invalidation to hold cache coherence across a 50,000+ SKU catalog.}
+        \resumeItem{Cut MySQL query volume 60\% and product API p50 from 200\,ms to 90\,ms with a cache-aside Redis layer using event-driven invalidation across a 50,000+ SKU catalog.}
         % Both numbers here are legitimately measurable, unlike the 30% that was cut.
         % Be ready to say where each came from: the 60% from slow-query counts or
         % Redis hit rate over a defined pre/post window, and the p50 from whatever
         % tool you read it out of. If you only have an average, change "p50 latency"
         % back to "average response time" -- an accurate average beats a percentile
         % you cannot defend.
-        \resumeItem{Automated warehouse order routing by building a Python Model Context Protocol (FastMCP) server exposing a legacy MySQL WMS to LLM agents: live-stock read tools plus write tools generating split-shipment pick tickets.}
+        \resumeItem{Built a Python MCP server (FastMCP) as the only access path for LLM agents into a legacy MySQL WMS: read tools for live stock, write tools emitting split-shipment pick tickets instead of raw table mutations.}
+        \resumeItem{Built a Pandas \textbf{ETL pipeline} that normalized 150+ unstructured supplier meeting notes and extracted supplier terms into structured records for brand analysis and contracting.}
       \resumeItemListEnd
 
     % Title reordered so both the whole-string embedding and the split-on-"&"
     % first token resolve into the IC cluster instead of the founder cluster.
+    % URL REMOVED Aug 19 2026: adorusjewels.com still serves a coming-soon page. The
+    % bullets describe a built platform, so printing the URL invited a reviewer to
+    % click and see a waitlist form -- the contradiction, not the placeholder, was the
+    % problem. DNS deliberately left alone; a company with no web presence reads worse
+    % than a pre-launch one. Put the URL back the day it actually launches.
     \resumeSubheading
       {Software Engineer}{May 2026 -- Present}
-      {Adorus (adorusjewels.com)}{}
+      {Adorus}{}
       \resumeItemListStart
         % CUT: "Sole developer on a 4-person founding team, translating co-founder and
         % stakeholder feedback ... across 6 development phases." Self-contradictory to a
@@ -213,21 +225,13 @@
         % inconsistent counts across versions are what makes an interviewer stop trusting
         % every number on the page. Also sync GPA (3.9 here vs "Major GPA 4.0" elsewhere)
         % and grad date ("December 2027" here vs "Fall 2027" elsewhere).
-        \resumeItem{Shipped AI virtual try-on at \textasciitilde\$0.05/image, storing zero customer photos, after benchmarking 5 approaches (A\nk WS Bedrock Nova Canvas, Stability, Rekognition, Gemini) on identity preservation, product fidelity, latency, and cost.}
-        \resumeItem{Diagnosed and fixed a revenue-affecting \textbf{production} tax bug that folded tax into shipping totals, re-sourcing authoritative amounts from Stripe's REST API and backing the fix with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment production failure.}
-        \resumeItem{Automated the post-purchase lifecycle across 6 order states with server-verified Shippo tracking webhooks, triggering transactional emails via Resend and decrementing per-variant inventory on paid orders.}
-        \resumeItem{Locked a private S3 image pipeline behind CloudFront with Origin Access Control, invalidation on delete, and least-privilege IAM; built 35 REST endpoints on Java Spring Boot, PostgreSQL (A\nk WS RDS), and a React (Vite) front end across 5 A\nk WS services running \textasciitilde\$40/month with GitHub Actions CI, Cognito \textbf{authentication and authorization} (customer/admin), and PCI-compliant Stripe checkout.}
+        \resumeItem{Shipped AI virtual try-on at \textasciitilde\$0.05/image after benchmarking 5 approaches (Bedrock Nova Canvas, Stability, Rekognition, Gemini) on identity preservation, fidelity, latency, and cost.}
+        \resumeItem{Fixed a \textbf{production} tax bug that folded tax into shipping totals, re-sourcing amounts from Stripe's API with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment failure.}
+        \resumeItem{Modeled the post-purchase lifecycle as a \textbf{6-state order machine} on server-verified Shippo webhooks, decrementing per-variant inventory only on confirmed-paid transitions.}
+        \resumeItem{Served private S3 imagery only through CloudFront with Origin Access Control and object-scoped IAM, \textbf{invalidating edge caches on delete} so removed assets stop serving before TTL expiry.}
+        \resumeItem{Built and operate the service behind it: \textbf{35 RESTful endpoints} on Java Spring Boot over PostgreSQL (A\nk WS RDS), across 5 A\nk WS services at \textasciitilde\$40/month.}
       \resumeItemListEnd
 
-    % INCOMING ROLE -- no bullets on purpose. You have not started, so there is
-    % nothing to claim, and an empty role with invented accomplishments is worse
-    % than no role at all. The signal here is simply that an outside company
-    % attached a title to you, which is the one thing every other entry lacks.
-    % Start month set (Aug 2026). STILL a one-liner on purpose -- he is days in, so
-    % there is nothing true to claim yet. Revisit ~mid-Oct 2026 and add 1-2 real
-    % bullets; that is when this stops being a title and becomes a genuine entry.
-    \resumeSubheadingOneLine
-      {Forward Deployed Engineer (Part-Time)}{Coutera}{August 2026 -- Present}
 
     \resumeSubheading
       {AI/ML Research Assistant}{Dec 2025 -- June 2026}
@@ -242,10 +246,26 @@
         % so nothing here claims a presentation.
         % If space is tight, drop the subtitle and keep "Public Perceptions of ChatGPT as
         % a Therapist-Like Tool" -- the methodology keywords are already in the next bullet.
-        \resumeItem{Co-author and primary writer of \emph{Public Perceptions of ChatGPT as a Therapist-Like Tool: A Sentiment-Stratified Topic Modeling Study of Social Media Data}, accepted at HI-\nk BI-\nk BI 2026 (ASONAM-collocated, Aug 2026); proceedings forthcoming with Springer.}
-        \resumeItem{Analyzed 5,000+ scraped Twitter, Reddit, and YouTube posts with an NLP and \textbf{machine learning} pipeline comparing BERTopic, LDA, and NMF topic modeling to measure public sentiment toward LLMs as a therapeutic tool.}
+        \resumeItem{Co-author and primary writer of \emph{Public Perceptions of ChatGPT as a Therapist-Like Tool}, accepted at HI-\nk BI-\nk BI 2026 (ASONAM-collocated); proceedings forthcoming with Springer.}
+        \resumeItem{Analyzed 5,000+ scraped Twitter, Reddit, and YouTube posts with an NLP and \textbf{machine learning} pipeline comparing BERTopic, LDA, and NMF to measure sentiment toward LLMs as a therapeutic tool.}
         % CUT: "Engineered Pandas preprocessing to normalize unstructured text." That is
         % df.str.lower() dressed up, and every reviewer knows it.
+      \resumeItemListEnd
+
+    % TA restored from the Workday DOCX, where it had been parked for page space.
+    % Rationale for spending the lines: with HerbsPro, it is one of only two entries
+    % awarded by an outside party with something at stake -- a department selected him
+    % to teach and to grade. Adorus and the projects he issued himself. It also covers
+    % Sept 2025 - June 2026, otherwise blank before HerbsPro.
+    % Title is "Lab Teaching Assistant (C++)" per his instruction, matching the Netflix
+    % reference resumes. "Algorithms Grader" was dropped from the title. The grading
+    % bullet is also cut -- grading is not engineering. What remains is live debugging,
+    % a stated preferred qualification in most of his target JDs.
+    \resumeSubheading
+      {Lab Teaching Assistant (C++)}{Sept 2025 -- June 2026}
+      {Santa Clara University}{}
+      \resumeItemListStart
+        \resumeItem{Mentored 40+ students in C++ memory management, pointers, and object-oriented design, \textbf{debugging} logic and memory errors live with GDB.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
@@ -261,18 +281,8 @@
       \resumeProjectHeading
           {\textbf{\href{https://github.com/spoigai21/jobscraper}{Internship Monitor}} \pipe{} \emph{Python, SQLite, REST APIs, Railway, Discord}}{2026}
           \resumeItemListStart
-            \resumeItem{Monitors 60+ company career pages every 45 minutes via a Python daemon running 13 parsers across Greenhouse, Ashby, Lever, Workday, and iCIMS, \textbf{debugged} against upstream markup changes; deployed 24/7 on Railway over a 4-table SQLite schema.}
-            \resumeItem{Suppressed repeat alerts that ID-diffing missed with a normalized employer-plus-title dedup key that collapses re-posted requisitions issued under new job IDs; routed matches through tiered Discord and ntfy alerts.}
-          \resumeItemListEnd
-
-      % Added back: this is the only genuinely differentiated project you have,
-      % and you had cut it while still listing "Qiskit, IBM Quantum" in Skills --
-      % listing the buzzword and dropping the proof is backwards.
-      \resumeProjectHeading
-          {\textbf{\href{https://github.com/spoigai21/kuhn-quantum-poker}{Kuhn Poker vs.\ Quantum}} \pipe{} \emph{Qiskit, IBM Quantum, FastAPI, React, Vercel}}{June 2026}
-          \resumeItemListStart
-            \resumeItem{Built a full-stack game where a 12-parameter, 6-qubit variational quantum circuit (superposition + entanglement) derives the opponent's mixed strategy, deployed on Vercel and Render.}
-            \resumeItem{Matched simulation within \textasciitilde1.7 percentage points on a 4,096-shot run on real IBM quantum hardware, the residual gap attributable to quantum noise.}
+            \resumeItem{Keeps 13 parsers alive against upstream markup drift across Greenhouse, Ashby, Lever, Workday, and iCIMS; polls 60+ career pages every 45 minutes as a 24/7 Python daemon on Railway.}
+            \resumeItem{Suppressed false alerts that ID-diffing missed with a normalized employer-plus-title dedup key collapsing reposts issued under new job IDs.}
           \resumeItemListEnd
 
       % Hackathon framing removed from the title and bullets -- it is a Projects
@@ -288,7 +298,7 @@
       \resumeProjectHeading
           {\textbf{\href{https://github.com/spoigai21/socialnetwork}{Social Network}} \pipe{} \emph{C++, Qt, MVC, Graphs}}{2025}
           \resumeItemListStart
-            \resumeItem{Generated friend suggestions via BFS traversal over a custom graph in a C++ desktop app with a Qt GUI on the \textbf{MVC design pattern}, with file I/O for persistence.}
+            \resumeItem{Generated friend suggestions via BFS traversal over a custom graph in a C++ Qt desktop app built on \textbf{MVC}, with file I/O for persistence.}
           \resumeItemListEnd
 
 
@@ -300,10 +310,10 @@
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
      \textbf{Languages}{: C++, Python, Java, JavaScript, SQL} \\
-     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, Claude Code, REST/RESTful APIs, unit \& integration testing, Stripe} \\
+     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, REST/RESTful APIs, Stripe} \\
      \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
      \textbf{AI / ML}{: Machine Learning, NLP, RAG, MCP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
-     \textbf{CS F\nk undamentals}{: Data Structures and Algorithms, Object-Oriented Design}
+     \textbf{Quantum}{: Qiskit, IBM Quantum} \\
     }}
  \end{itemize}
 
@@ -313,8 +323,11 @@
 %   EXCEPTION: Amazon's SDE Intern JD literally lists "AI tools for development
 %   productivity" as a preferred qualification. For the AMAZON version only,
 %   add Claude Code back to Frameworks & Tools.
-% Qiskit/IBM Quantum dropped from Skills -- the Kuhn Poker project proves it now,
-% which is stronger than asserting it.
+% Qiskit/IBM Quantum were dropped from Skills because the Kuhn Poker project proved
+% them. That project is now cut, so the Skills entry was RESTORED at his request and
+% is now asserted without an artifact on the page. Be ready to describe the 6-qubit
+% variational circuit and the 4,096-shot run on IBM hardware from memory -- the repo
+% still exists at github.com/spoigai21/kuhn-quantum-poker if asked for proof.
 
 \end{document}
 

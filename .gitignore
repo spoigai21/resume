@@ -45,3 +45,6 @@ venv/
 
 # Note: PDFs and .docx are intentionally NOT ignored — they are the deliverables
 # this repo exists to track.
+
+# LaTeX sources are the master copies — track them.
+!*.tex
