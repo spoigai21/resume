@@ -22,6 +22,14 @@
 %      and the CS Fundamentals row are both gone -- coursework covers the latter.
 %      Quantum kept as its own row (Qiskit, IBM Quantum) even though the Kuhn Poker
 %      project that proved it was cut. See the note at the Skills block.
+%   5. (Aug 20 2026) Retail-density pass. The two commerce employers occupy ~20 of
+%      ~61 rendered lines -- the entire band between Education and the midpoint --
+%      so every retail noun a reader meets is front-loaded. Load-bearing ones kept
+%      (SKU catalog is scale evidence; pick tickets are what make the MCP bullet
+%      good; Stripe and shipping totals are the tax bug). Two free ones removed:
+%      the ETL bullet's business-ops tail and "post-purchase". Inline company
+%      descriptors were considered and REJECTED -- see the note above HerbsPro.
+%
 %   4. Bullets tightened ~700 chars across all 13 to reach one page. Nothing factual
 %      was dropped, only the qualifier layer. The Netflix reference resumes state a
 %      thing once per bullet; that is the standard being matched.
@@ -175,6 +183,18 @@
 \section{Work Experience}
   \resumeSubHeadingListStart
 
+    % DESCRIPTORS CONSIDERED AND REJECTED, Aug 20 2026. Both employers are
+    % out-of-vocabulary, so a reader reconstructs what they are from the bullets --
+    % and the available evidence is SKU, stock, pick tickets, supplier, try-on, tax,
+    % shipping, Stripe, inventory. The inference lands on "two small online stores."
+    % The obvious fix -- an inline descriptor -- does not work here, because the
+    % honest descriptor for each one CONFIRMS that read: "e-commerce supplements
+    % retailer" and "4-person jewelry startup" both make the page more retail, not
+    % less. A descriptor only helps if it carries SCALE (headcount, eng-team size,
+    % order volume, traffic). The one scale figure available, 50,000+ SKUs, is
+    % already in bullet 1. So: no descriptors unless a real headcount or volume
+    % number turns up. Reversing this without a number would be a net loss.
+    %
     % HerbsPro leads the shipped roles. It is the only role where someone else hired you and
     % reviewed your work, and the title normalizes cleanly to an IC/intern node.
     % Leading with "Co-Founder" put your CURRENT title in the founder/executive
@@ -197,7 +217,15 @@
         % back to "average response time" -- an accurate average beats a percentile
         % you cannot defend.
         \resumeItem{Built a Python MCP server (FastMCP) as the only access path for LLM agents into a legacy MySQL WMS: read tools for live stock, write tools emitting split-shipment pick tickets instead of raw table mutations.}
-        \resumeItem{Built a Pandas \textbf{ETL pipeline} that normalized 150+ unstructured supplier meeting notes and extracted supplier terms into structured records for brand analysis and contracting.}
+        % REWRITTEN Aug 20 2026. This was the only bullet on the page that read as
+        % business operations rather than engineering. Two problems, both in the tail:
+        % "for brand analysis and contracting" describes what the business did with the
+        % output, not what was built, and it was the densest retail-ops phrasing in the
+        % top half of the page. Now leads with the data-engineering move (normalize ->
+        % fixed schema) and stops at the artifact. Every fact is retained: Pandas, ETL,
+        % 150+, unstructured, normalization, supplier-term extraction, structured output.
+        % ~18 characters shorter, so page fit is unaffected.
+        \resumeItem{Built a Pandas \textbf{ETL pipeline} that normalized 150+ unstructured meeting notes into a fixed schema, extracting supplier terms into structured records.}
       \resumeItemListEnd
 
     % Title reordered so both the whole-string embedding and the split-on-"&"
@@ -225,9 +253,74 @@
         % inconsistent counts across versions are what makes an interviewer stop trusting
         % every number on the page. Also sync GPA (3.9 here vs "Major GPA 4.0" elsewhere)
         % and grad date ("December 2027" here vs "Fall 2027" elsewhere).
-        \resumeItem{Shipped AI virtual try-on at \textasciitilde\$0.05/image after benchmarking 5 approaches (Bedrock Nova Canvas, Stability, Rekognition, Gemini) on identity preservation, fidelity, latency, and cost.}
+        % ADDED Aug 21 2026. Leads Adorus: it is the strongest judgment bullet on the
+        % page and the single best answer to the retail-density problem, because it puts
+        % real computer-vision and retrieval work in the top half where every commerce
+        % noun currently clusters. Merged from two drafts into one bullet at his request.
+        %
+        % Vocabulary chosen to de-retail without losing a fact: "image-retrieval
+        % pipeline" not "visual product search"; "worn-object region" not "jewelry
+        % region"; "correct match" not "correct product"; the "DTC e-commerce store"
+        % framing dropped entirely. All are the actual CV/IR terms, so this is register,
+        % not euphemism.
+        %
+        % CUT TO FIT THE SINGLE BULLET, all preserved in RESUME-DETAILS.md:
+        %   - the 0.014 similarity band across the uncropped top-4. This is the best
+        %     detail in the whole project (a quantified NULL result -- the baseline had
+        %     no discriminative signal at all), but it needs the two-bullet version.
+        %   - the 906 MB Spring Boot instance and the $0 incremental hosting cost.
+        % Both are interview material. Have them ready; they are stronger spoken.
+        %
+        % DELIBERATELY NOT USED: the "+72%" from his third draft. A cosine-similarity
+        % delta is not a percentage improvement, and the figure reads as if derived from
+        % the 0.72 value itself. Per section 5, one number that collapses under
+        % questioning discredits every other number on the page.
+        %
+        % NO MATH MODE ANYWHERE IN THIS BULLET. An arrow would pull \rightarrow from
+        % CMSY and reintroduce exactly the font-switch parse bug section 4 fixed for the
+        % $|$ pipes. "from rank 3 to rank 1" is spelled out on purpose.
+        \resumeItem{Built a \textbf{two-stage image-retrieval pipeline} (PyTorch, CLIP ViT-B/32) that crops queries to the worn-object region with Keypoint R-CNN, moving the correct match from rank 3 to rank 1; precomputed embeddings ranked by cosine similarity in Postgres keep models off the request path.}
+        % RESTORED AND REWRITTEN Aug 21 2026, at his correction: he shipped on Gemini
+        % only. Bedrock Nova Canvas, Stability and Rekognition were REJECTED candidates.
+        % Listing all four without naming the winner implied hands-on with four managed
+        % services when the truth is one -- the exact class of overstatement section 5
+        % says takes every other claim on the page down with it. The benchmark framing
+        % is dropped rather than de-named, because "benchmarked 5 approaches" with the
+        % alternatives stripped is the unverifiable form: naming what you rejected is
+        % the ONLY thing that makes a benchmark credible, so an unnamed one is weaker
+        % than no claim at all.
+        %
+        % What replaces it is stronger and was sitting unused in the AllDetails PDF:
+        % measurement-driven prompting. His own section 5 notes call it "the actually-
+        % hard part of the try-on," it is entirely his own code, and it carries zero
+        % third-party-service risk. "Reference-conditioned" is the accurate technical
+        % description of how Gemini is used here and reads as ML vocabulary rather than
+        % retail vocabulary.
+        %
+        % VERIFY BEFORE SUBMITTING: confirm ~$0.05/image is Gemini's actual per-image
+        % cost and not the benchmark range across candidates. AllDetails is ambiguous on
+        % this. If it is the range, drop the figure -- do not approximate it.
+        %
+        % Interview material NOT on the page (see RESUME-DETAILS.md): the rejected
+        % candidates and the evaluation axes, the 3-generation free-credit quota that
+        % resets on purchase, getUserMedia live capture, and storing zero customer photos.
+        \resumeItem{Shipped AI virtual try-on on a reference-conditioned Gemini model at \textasciitilde\$0.05/image, with measurement-driven prompting that parses per-item dimensions into true-to-life scale and physically accurate drape.}
         \resumeItem{Fixed a \textbf{production} tax bug that folded tax into shipping totals, re-sourcing amounts from Stripe's API with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment failure.}
-        \resumeItem{Modeled the post-purchase lifecycle as a \textbf{6-state order machine} on server-verified Shippo webhooks, decrementing per-variant inventory only on confirmed-paid transitions.}
+        % TIGHTENED Aug 20 2026: "post-purchase lifecycle" -> "order lifecycle". The
+        % dropped word is retail-ops vocabulary and was redundant with "6-state order
+        % machine" two words later -- the bullet stated the same thing twice, once in
+        % PM register and once in engineering register. Keeping only the second.
+        % CUT Aug 21 2026 to bring Adorus to 4 bullets. Three reasons, in order of weight:
+        %   1. ACCURACY. Shippo is a shipping API -- it carries label and tracking events,
+        %      not payment. "Confirmed-paid" is a Stripe fact, so the bullet attributed a
+        %      Stripe-driven transition to a Shippo-driven machine. Unresolved since Aug 20.
+        %      Cutting retires the problem; restoring requires naming both event sources.
+        %   2. Highest retail density on the page: order lifecycle + inventory +
+        %      confirmed-paid + per-variant, all in one line.
+        %   3. Weakest keywords of the six. "State machine" and "webhooks" are real, but
+        %      they are outranked by everything around them (PyTorch, CLIP, IAM, Spring Boot).
+        % One uncomment away if a JD ever rewards event-driven or state-machine work:
+        % \resumeItem{Modeled the order lifecycle as a \textbf{6-state machine} on server-verified Shippo webhooks, decrementing per-variant inventory only on confirmed-paid transitions.}
         \resumeItem{Served private S3 imagery only through CloudFront with Origin Access Control and object-scoped IAM, \textbf{invalidating edge caches on delete} so removed assets stop serving before TTL expiry.}
         \resumeItem{Built and operate the service behind it: \textbf{35 RESTful endpoints} on Java Spring Boot over PostgreSQL (A\nk WS RDS), across 5 A\nk WS services at \textasciitilde\$40/month.}
       \resumeItemListEnd
@@ -312,7 +405,11 @@
      \textbf{Languages}{: C++, Python, Java, JavaScript, SQL} \\
      \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, REST/RESTful APIs, Stripe} \\
      \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
-     \textbf{AI / ML}{: Machine Learning, NLP, RAG, MCP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
+     % PyTorch and computer vision added Aug 21 2026 alongside the retrieval bullet.
+     % PyTorch was a first-tier keyword missing from the page entirely, and a skill
+     % asserted in a bullet but absent from Skills is the kind of gap a keyword
+     % matcher punishes for no reason.
+     \textbf{AI / ML}{: Machine Learning, NLP, computer vision, RAG, MCP, PyTorch, CLIP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
      \textbf{Quantum}{: Qiskit, IBM Quantum} \\
     }}
  \end{itemize}
