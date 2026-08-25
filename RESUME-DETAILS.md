@@ -31,9 +31,30 @@ region.
 Catalog embeddings are precomputed offline. Query embedding is ranked against them
 by cosine similarity, computed in Postgres.
 
-**Serving.**
-Query-time inference is isolated behind a FastAPI microservice. No model runs in
-the main production serving path.
+**Serving.** *(updated Aug 25, 2026 — deployed to Lambda)*
+Query-time inference runs in **AWS Lambda**. No model runs on the always-on
+instance. Previously this was a FastAPI microservice; if FastAPI is still in the
+path via an adapter, say so, and if it was replaced outright, stop mentioning it.
+
+**Open questions on the Lambda deployment — answer these before an interview:**
+
+- **Container image or zip?** PyTorch + CLIP + Keypoint R-CNN exceeds Lambda's
+  250 MB unzipped zip limit, so this is almost certainly an ECR container image
+  (10 GB limit). Knowing that constraint is a real AWS signal — confirm and use it.
+- **Cold start cost.** Loading PyTorch weights in a fresh container is seconds, not
+  milliseconds. This is the FIRST question an infrastructure interviewer asks about
+  serverless inference. Have a number.
+- **Provisioned concurrency — yes or no, and why?** Using it defeats scale-to-zero
+  and reintroduces a standing cost. Declining it is defensible for bursty,
+  low-volume traffic; say that deliberately rather than by omission.
+- **Model baked into the image, or pulled from S3 at init?** Changes the cold-start
+  math substantially.
+
+**Why Lambda is a stronger claim than the old one.** "$0 incremental hosting"
+previously rested on "precompute means no new compute was provisioned." With Lambda
+it is scale-to-zero: there is no always-on inference compute at all, and idle costs
+nothing. That is a real architectural decision driven by a bursty workload, not an
+accounting observation.
 
 ### The ablation (the important part)
 

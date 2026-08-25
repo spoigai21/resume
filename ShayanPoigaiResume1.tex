@@ -279,7 +279,13 @@
         % NO MATH MODE ANYWHERE IN THIS BULLET. An arrow would pull \rightarrow from
         % CMSY and reintroduce exactly the font-switch parse bug section 4 fixed for the
         % $|$ pipes. "from rank 3 to rank 1" is spelled out on purpose.
-        \resumeItem{Built a \textbf{two-stage image-retrieval pipeline} (PyTorch, CLIP ViT-B/32) that crops queries to the worn-object region with Keypoint R-CNN, moving the correct match from rank 3 to rank 1; precomputed embeddings ranked by cosine similarity in Postgres keep models off the request path.}
+        % UPDATED Aug 25 2026: inference deployed to Lambda. The serving clause now names
+        % the platform instead of describing the effect ("keep models off the request
+        % path"), because the platform IS the decision and it is the half that matters to
+        % an infrastructure JD. Note A\nk WS, not AWS -- every non-URL occurrence in this
+        % file carries the kern guard from section 4. Plain "AWS" here would be the only
+        % unguarded one on the page.
+        \resumeItem{Built a \textbf{two-stage image-retrieval pipeline} (PyTorch, CLIP ViT-B/32) that crops queries to the worn-object region with Keypoint R-CNN, moving the correct match from rank 3 to rank 1; inference runs in A\nk WS Lambda with catalog embeddings precomputed and ranked by cosine similarity in Postgres.}
         % RESTORED AND REWRITTEN Aug 21 2026, at his correction: he shipped on Gemini
         % only. Bedrock Nova Canvas, Stability and Rekognition were REJECTED candidates.
         % Listing all four without naming the winner implied hands-on with four managed
