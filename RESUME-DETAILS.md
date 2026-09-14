@@ -315,3 +315,96 @@ APPLICATION-RESPONSES.md, application-answers.json, RESUME-STRATEGY.md):
 7. **Try-on:** unchanged — the ~$0.05/image Gemini figure is still an open verification item.
 
 **Kept, not contradicted:** the rank 3 → rank 1, 0.42 → 0.72 and 0.014-band ablation, now attributed to the pose-crop stage.
+
+---
+
+## GitHub projects — verified from source (read Sept 14 2026)
+
+> Read directly from the repos (clones + commit history), not from the profile README. Where the
+> profile README / portfolio / current resume say something the code does not support, it is flagged.
+> Authorship numbers come from `git log` / blame. Treat this section as authoritative over older notes.
+
+### Internship Monitor — github.com/spoigai21/internship-monitor (formerly /jobscraper) — SHARED REPO
+- **Ownership:** started by **Savir Khanna** (2026-06-12, 30 commits, ~13.2k lines added). Shayan: **28 commits, 2026-06-25 → 2026-08-20, ~3.1k lines**; several later commits co-authored by Claude. Never describe as solo.
+- **What it is:** Python scraper/daemon that pulls internship listings from company boards + Simplify feeds, filters/scores them against `monitor/profile.yaml`, alerts by tier. `main.py` daemon or `cli.py run-once` (Click CLI: status, alerts, closed, test-alerts, toggle, run, run-once, heartbeat).
+- **Scale (code today):** 106 companies in `monitor/companies.py` (104 enabled; Greenhouse 56, Ashby 15, Workday 9, Lever 6, Eightfold 5, HTML 3, Simplify 2, others 1). `detect_board_type()` knows **17 source types**; **14 parser files**. **No iCIMS parser.** ~13.9k LOC Python; **308 tests pass** (286 `def test_` in 23 files).
+- **Live cadence:** GitHub Actions cron — hourly at :17 weekdays ~9am–11pm ET, every 4h overnight/weekends; SQLite DB persisted via Actions cache; daily heartbeat job. Daemon default (45 min day / 3h night) is NOT what runs. Railway is abandoned (cron not applied); an Oracle VM systemd config also exists.
+- **Scoring (Savir's core):** `should_exclude()` then `score_job()` points (dream role +4, SWE/data title +3, eng dept +2, skills up to +3/+2, company tier S–C +4..+1, space/perception +2); ≥7 = high tier. Alerts: push/email/SMS/call (Twilio TTS), push via Discord webhook else ntfy; committed profile routes both tiers to push+SMS.
+- **Shayan's own work:**
+  - **Content-based dedup** (`monitor/dedup.py`): key `employer::normalized_title` (strips years/seasons/filler, engineering→engineer, internship→intern, co-op, "Company —" prefix); stored in `alerted_jobs`, 30-day suppression. Commit cites real data: **Copart had 22 postings of one title; ~2,900 of 14,808 feed listings were reposts.**
+  - **Stale-backfill filter:** skip listings first seen >14 days after posting (3 in CI; only Simplify supplies post dates).
+  - **Parsers:** Simplify; Oracle and SmartRecruiters (Aug 20).
+  - **Thread-safety fix:** per-worker status was shared across the thread pool → moved to thread-local storage.
+  - **ntfy outage:** Railway had no IPv6 → forced IPv4 (`net.py`); failed sends retried every cycle until ntfy rate-blocked the IP → switched to at-most-once delivery + diagnostics; added Discord fallback.
+  - **Hosting migration** to GitHub Actions; moved cron off :00 because :00 runs were being dropped.
+- **Best interview stories:** the dedup-as-entity-resolution bug (reposts under new IDs passing ID-diffing), the retry storm → at-most-once tradeoff, the thread-local race.
+- **Resume/profile claims that are WRONG:** "13 parsers" (14 files / 17 types), "Workday, and iCIMS" (no iCIMS), "60+ career pages" (106/104), "every 45 minutes" (hourly/4h on Actions), "24/7 on Railway with persistent volume" (Actions + cache), "20+ companies" (profile, outdated), implied solo ownership.
+
+### Kuhn Poker vs Quantum — github.com/spoigai21/kuhn-quantum-poker — SOLO (11 commits, Jun 6–9 2026)
+- **What it is:** browser Kuhn poker (3 cards, one bet round) vs an AI whose 6 bet/call probabilities come from an optimized 6-qubit variational circuit; a "Run on Real Hardware" button sends the circuit to IBM and shows chip vs simulator side by side. Live demo kuhn-quantum-poker.vercel.app; backend on Render.
+- **Circuit (`backend/main.py`, 391 lines):** H on all 6 qubits → RY layer → CX chain (entanglement) → second RY layer = **12 parameters**. Qubits 0–2 = P(bet | J/Q/K), qubits 3–5 = P(call | J/Q/K).
+- **Optimization:** `cost_function` enumerates **all 64 pure player-1 strategies** and minimizes the best-response payoff (i.e., minimizes exploitability); SciPy **COBYLA, 5 random restarts, ≤2,000 iterations each**.
+- **Stored strategy (verified by re-simulating the angles; matches live `/ai/strategy`):** bet J/Q/K = 0.2859/0.3136/0.8578; call J/Q/K = 0.1306/0.4666/0.9250. Independent calc: a best-responder earns ~+0.0046 chips/hand vs it (Nash would hold them to −1/18 ≈ −0.056) — a decent but not equilibrium strategy.
+- **Hardware path:** `/ai/verify` → `qiskit-ibm-runtime` least-busy real backend, transpile, **4,096 shots** (`default_shots`), returns per-qubit marginals vs ideal. Endpoints: `/game/new`, `/game/{id}/action`, `/stats`, `/ai/strategy`, `/ai/set-token`, `/ai/verify`.
+- **History worth telling:** first commit had RY only (no superposition/entanglement) and optimized at startup; commit `f8846bf` added H + CX and replaced the startup optimization with hardcoded optimized angles (likely cold-start on Render).
+- **Stack:** FastAPI, qiskit, qiskit-ibm-runtime, numpy, scipy; React 19 + Vite 8 + @vercel/analytics. (qiskit-aer listed but unused.)
+- **Claims to fix:** "~1.7 pp real-chip vs simulation match" is **not recorded anywhere in the repo** (no results, backend name, or job ID) — only claim it if he has the IBM job record. "Strategy computed by a real quantum computer" overstates it: the strategy is optimized on a simulator; hardware is a verification run. No tests. Minor bugs: open `/ai/set-token`, global stats, move-log label mismatch (`ai_*` vs `opponent_`).
+
+### NBA Betting Analysis — github.com/spoigai21/nba-betting-analysis — **ON HOLD: do not put on resumes yet (Shayan, Sept 14 2026)** — SOLO (13 commits, Aug 3–13 2026; some co-authored by Claude)
+- **What it is:** R pipeline predicting NBA totals/spreads/moneylines and testing honestly whether they beat the market. README: "not a betting bot." Headline result is a defensible **null** (no edge).
+- **Pipeline:** `R/01_load_data.R` → features → `03_model.R` (lm for total & margin, logistic glm for win prob; team ratings with ridge shrinkage using only prior games) → backtest → forward test → news → usage model → diagnostics → `09_llm_news.R`; `daily.R` + `RUNBOOK.md` for in-season runs.
+- **Data:** Kaggle lines, hoopR/ESPN results + roster status, the-odds-api live lines, ESPN news. LLM (Gemini/Anthropic) extracts coach-strategy signals; every signal must quote its source sentence; cached in committed `data/llm_news_cache.jsonl`.
+- **Rigor:** append-only timestamped predictions (`R/track_record.R`), vig included, closing-line value, random-bettor placebo, regression test of whether the market line already contains the model's information.
+- **Numbers (from commits):** 24,440 games (2007-10-30 → 2026-06-13); **data bug caught: 8,267 away-favourite spreads read with inverted sign**; backtest on 24,195 bets **ROI −4.87% [−6.1%, −3.6%]** vs random-bettor band −5.46%..−3.44%; model 88–95% collinear with closing line; team ratings improved RMSE (total 18.55→18.25, margin 12.95→12.92) but not ROI; usage model 64,831 player-games / 701 players, +2.29% in 2024-25 did not replicate (−1.07% in 2025-26); tests grew 146→233. `output/track_record.csv` has no live rows yet.
+- **Use for:** quant/ML/data roles — frame as a market-efficiency study with honest controls, not a winning model.
+
+### Disease Tracker ("PathoMap") — github.com/tatertotbot/AWS-Inrix-2025 — TEAM (AWS × INRIX hackathon, Oct 25–26 2025, 6 committers)
+- **System:** `backend/scraping/scraper.py` (Selenium/requests) → JSON/CSV → `databaseConnect.py` `put_item` into DynamoDB tables `measles`, `flu`, `nile` (items `{case, cases, state, county}`; tables created in console, no schema code) → FastAPI → Next.js 16 / React 19 / Leaflet map. No placement/award recorded.
+- **Shayan's part (sole author per blame):** `backend/bedrockagent/connect.py` (110 lines) — the FastAPI app: `GET /all-diseases` (DynamoDB scan of the 3 tables) and `GET /analyze-risk?county&state&disease&cases` (one Bedrock `converse` call to **Claude Sonnet 4.5** `us.anthropic.claude-sonnet-4-5-20250929-v1:0`, prompting JSON `risk_score` 0–10 + `risk_level`); plus `bedrock_analysis.py` test script and requirements. 12 of 64 commits, ~188 of ~2,360 non-data lines (~8%). Did NOT write scraping, ingestion, DynamoDB design, or frontend.
+- **Accurate claim:** "Built the FastAPI backend and an AWS Bedrock (Claude Sonnet 4.5) county risk-scoring endpoint over DynamoDB for a 6-person hackathon team."
+- **Claims to drop:** "designed DynamoDB schemas for scalable ingestion" (teammate's, and no schema code), "real-time" (data scraped then scanned; README says weekly), "low-latency" (no measurements; each risk call is a full LLM call), "pipeline" (single call), "React frontend" (Next.js, not his). Side-panel wiring to `/analyze-risk` looks broken in the final commit.
+
+### Evermind — github.com/MihirGajjar27/prod-empathic-ai-backend — TEAM (Hack for Humanity 2026, Feb 28–Mar 1 2026, 24h, team of six per portfolio; 4 committers on backend)
+- **System (backend "h4h"):** browser connects to Hume EVI directly using a token from `api/routes/auth_hume.py`; client forwards Hume events (final user message + prosody, assistant message) over WS `/ws/session/{id}` (`ws/session_ws.py`); `orchestration/kg_updater.py` sends each utterance to **Gemini 2.5 Flash-Lite** (LangChain / Vertex AI), which returns graph-edit tool calls applied with Cypher MERGE (`services/neo4j/repo_graph.py`); server pushes `kg.diff`, `summary.partial`, `coach.insight`, safety events. Graph: Session/Utterance/ProsodyFrame + 8 concept types (Person, Trigger, Emotion, Belief, Need, Goal, Action, Event); 8 relationship types; ≤4 node / ≤6 edge ops per utterance; Gemini also does safety + insights. 8 REST routes + 1 WS.
+- **Shayan's part:** 2 of 17 commits — early draft of WS protocol models (`ws/protocol.py`) and a stub `ws/session_ws.py`; ~101 lines added, ~37 survive of ~4,170 (<1%). Hume/Gemini/Neo4j by Mihir; WS handler (267/284 lines) and orchestration by Zach Peng.
+- **Profile claims that don't match the backend:** audio is not streamed over the backend WebSocket to Hume (browser→Hume directly); Gemini builds the graph, it does not generate replies (EVI does); no "Topic" node type. Next.js / React Three Fiber orb / transcript / live graph view: no public frontend repo — unverifiable.
+- **Use only as a clearly-labelled team hackathon project**, his role = WebSocket message protocol draft + integration; never as the author of the Hume/Gemini/Neo4j system.
+
+### Social Network — github.com/spoigai21/socialnetwork — SOLO coursework (project file `HW8.pro`; first commit 2025-11-29, demo video 2026-06-18)
+- Qt6 desktop app: login, profiles, friends, suggestions, posts, bios, search, credential change. Models `User`/`Post`/`Network`, widget `SocialNetworkWindow` (model/view split, not strict MVC). Friend graph = `std::set<int>` adjacency. File I/O via `users.txt`, `posts.txt`, `biography.txt`, `password.txt` (plaintext passwords). Sample data 148 users / 1,211 posts. ~1,535 LOC C++. No tests.
+- **Claim to fix:** friend suggestions are **mutual-friend counting**, not BFS. BFS exists (`shortestPath`, `distanceUser`) and DFS (`groups()` connected components) but the GUI does not use them. Accurate: "friend suggestions ranked by mutual-friend count over an adjacency-set graph; BFS shortest-path and DFS component search in the model layer."
+- Portfolio dates it Sept 2025; repo starts Nov 2025.
+
+### CSCI164 — github.com/spoigai21/CSCI164 — SOLO (2 commits, bulk upload 2026-06-09)
+- Competitive-programming solutions (file names match CSES Problem Set; ~1,948 LOC C++, no README/tests). Graphs: DFS components, Kahn topo sort, articulation points, Kosaraju SCC, Eulerian circuit, DSU union-by-rank, shared `graph.h`. Strings: Z-algorithm, Manacher, Booth minimal rotation, suffix array + LCP, inverse BWT, inverse suffix array. Other: LIS O(n log n), Monte Carlo area estimate (hand-rolled PRNG, 10⁶ samples). `mergedSol.cpp` is unfinished (won't compile).
+- **Use:** interview/algorithms evidence and a "Theory of Algorithms grader" credibility point; not a resume project.
+
+### Agentic Restaurant RAG — github.com/spoigai21/restaurant-rag — SOLO toy demo (1 commit, 2025-09-17)
+- 10 hard-coded sentences (5 "city, cuisine, name" + 5 addresses) embedded with Ollama `mxbai-embed-large` into ChromaDB collection `restaurantData`; FastMCP server exposes **one tool** `chroma_restaurant_query(query, n_results=1)`; Open WebUI (Docker) reaches it through `mcpo` (HTTP/OpenAPI), chat model `gemma3:4b`. ~60 LOC, no requirements/tests; README path wrong; `.pyc`/`.idea` committed.
+- **Use:** only as a one-line "first MCP server" talking point; the HerbsPro MCP server is the real MCP evidence.
+
+### Portfolio site — github.com/spoigai21/portfolio (Jun 14–Aug 20 2026, 57 commits)
+- Next.js 14 App Router, React 18, three.js via react-three-fiber/drei/postprocessing (black hole, galaxy nav, 3D skill orbs), Vercel Analytics, sitemap/robots/JSON-LD/OG. README outdated ("aurora" design). Header link only — not a resume project.
+- **Content on the site not previously in these notes:**
+  - **CS Teaching Assistant & Algorithms Grader, SCU (Sept 2025–June 2026)** — C++ lab TA (40+ students, GDB) and grader for Theory of Algorithms (40+ students, 2 sections).
+  - **Countera — Forward Deployed Engineer, starting August 2026** (GitHub profile says "FDE Intern @ Countera"); only bullet: "Joined Forward Deployed Engineering Team." **Need details from Shayan before using.**
+  - Hackathon names: Evermind = Hack for Humanity 2026; Disease Tracker = AWS × INRIX 2025. No awards claimed.
+  - Major GPA 4.0; LeetCode u/shapoi.
+- Inconsistencies: Kuhn link points to `KuhnQuantumPoker` (repo is `kuhn-quantum-poker`); Adorus dated May 2026 while HerbsPro June 2026.
+
+### Not resume material
+- `sentimentanalyzer` (Java, 2023): ~50-line Stanford CoreNLP 4.5.1 CLI, prints 5-class sentence sentiment (description's "binary" is wrong). High-school era.
+- `yahtzee` (Java, 2023): 3-player text Yahtzee, 702 LOC, package `com.proj.apcsa` (AP CS A coursework).
+- `carpal` (2023): empty repo (README `# carpal` only) — consider archiving.
+
+### Behavioral story (Medium: "The First Time I Saw Claude Code Get It Wrong")
+During the Adorus store deployment, Claude Code migrated products from a local DB to AWS Postgres and reported losing 6 products while mangling 14 more (wrong names/descriptions, badly formatted images). He restored the lost ones from a spreadsheet backup and spent hours hand-correcting the rest because there was no data pipeline. Lessons he states: back up before risky operations; engineers must supervise AI tools rather than delegate blindly. Good "mistake / what you changed" answer; not a resume line.
+
+### Tailoring routing (GitHub projects)
+| Role type | Pull from |
+|---|---|
+| Quant / data / ML research | Kuhn exploitability optimization. (NBA analysis ON HOLD — not on resumes yet; no stock-analysis project either) |
+| Backend / infra / reliability | Internship Monitor (Shayan's parts: dedup entity resolution, retry storm → at-most-once, thread-local race, Actions migration) |
+| Quantum / research-y | Kuhn Poker (12-param VQC, 64-strategy exploitability objective, COBYLA restarts, IBM runtime path) |
+| C++ / systems / algorithms | Social Network (accurate wording above), CSCI164 algorithm coverage |
+| AI apps / cloud | Disease Tracker backend (Bedrock Claude endpoint) — team-labelled |

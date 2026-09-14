@@ -31,7 +31,7 @@ r = PdfReader(sys.argv[1])
 t = ''.join(p.extract_text() for p in r.pages)
 known = {'PyTorch','FastAPI','CloudFront','PostgreSQL','MySQL','SQLite','JavaScript','BERTopic',
          'DynamoDB','ChromaDB','OpenWebUI','GitHub','LinkedIn','NumPy','HerbsPro','FastMCP',
-         'NoSQL','ChatGPT','YouTube','ViT','iCIMS'}
+         'NoSQL','ChatGPT','YouTube','ViT','iCIMS','PayPal','httpOnly','SmartRecruiters'}
 baseline = set()  # section 28 glue fixed by \pdfinterwordspaceon, Sept 12 2026
 kern  = [s for s in ['A WS', 'Co-F ', 'F ramew', 'T ools', 'T rack', 'F undam'] if s in t]
 glue  = sorted(w for w in set(re.findall(r'\b[A-Za-z]*[a-z][A-Z][A-Za-z]*\b', t)) if w not in known)
