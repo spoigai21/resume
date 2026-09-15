@@ -1,0 +1,418 @@
+%==============================================================================
+%  SYSTEMS VARIANT -- forked from the master after the Amazon build.
+%
+%  PROBLEM THIS FILE SOLVES: two Adorus bullets made the page read as a CRUD web
+%  app -- REST endpoints, Stripe, auth, S3 uploads, an ORM over Postgres. That is
+%  the shape of every portfolio project, so a reader pattern-matches to it and the
+%  ceiling drops no matter how good the rest is. NOT a domain problem: e-commerce
+%  is fine, and for Amazon it is an asset. A register problem.
+%
+%  RULE APPLIED THROUGHOUT: lead with the DECISION, not the product. Same facts,
+%  same numbers, nothing invented -- only what is foregrounded changes.
+%
+%  Deltas from master:
+%   1. Adorus "automated the post-purchase lifecycle" -> named as a 6-state order
+%      machine driven by untrusted external callbacks. Identical work; "automated
+%      the lifecycle" is how a PM describes it, a state machine is how it is built.
+%   2. The 13-technology stack-dump bullet is split. The access-control and cache
+%      -invalidation decision leads on its own; scope survives as a second, shorter
+%      bullet instead of being the point. Every technology in the dump already
+%      appears verbatim under Technical Skills, so nothing is lost.
+%   3. Skills: REVERTED to the original grouping at his request. The "Systems" row
+%      and the CS Fundamentals row are both gone -- coursework covers the latter.
+%      Quantum kept as its own row (Qiskit, IBM Quantum) even though the Kuhn Poker
+%      project that proved it was cut. See the note at the Skills block.
+%   5. (Aug 20 2026) Retail-density pass. The two commerce employers occupy ~20 of
+%      ~61 rendered lines -- the entire band between Education and the midpoint --
+%      so every retail noun a reader meets is front-loaded. Load-bearing ones kept
+%      (SKU catalog is scale evidence; pick tickets are what make the MCP bullet
+%      good; Stripe and shipping totals are the tax bug). Two free ones removed:
+%      the ETL bullet's business-ops tail and "post-purchase". Inline company
+%      descriptors were considered and REJECTED -- see the note above HerbsPro.
+%
+%   4. Bullets tightened ~700 chars across all 13 to reach one page. Nothing factual
+%      was dropped, only the qualifier layer. The Netflix reference resumes state a
+%      thing once per bullet; that is the standard being matched.
+%
+%  THE THROUGH-LINE THIS CREATES: cache-aside invalidation at HerbsPro, CDN edge
+%  invalidation at Adorus, and the repost-dedup key on Internship Monitor are all
+%  the same problem -- knowing when cached or duplicated state has gone stale. That
+%  reads as a person with a systems instinct rather than three unrelated jobs. If
+%  asked "what are you good at," this is the answer, and it is genuinely true.
+%
+%  Compile with pdflatex, then run the parse check at the bottom. Must print [].
+%==============================================================================
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+%---- PARSING FIX 1 -----------------------------------------------------------
+% T1 + Latin Modern. This is what lets \textbar and \textasciitilde come from
+% the TEXT font instead of the math fonts. Your old "$|$" pulled the pipe from
+% CMSY9 and the tilde from a 1-glyph math subset -- each one forced a font
+% switch mid-line, and extractors drop the word gap across a font switch. That
+% is what produced "EngineerMay", "CA|(510)", "DynamoDBGithub".
+% Latin Modern is visually near-identical to Computer Modern, so the look holds.
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-6pt}]
+
+% Ensure PDF is machine-readable / ATS-parseable
+\pdfgentounicode=1
+
+%---- PARSING FIX 4 (Sept 12 2026, RESUME-STRATEGY section 28) ------------------
+% pdfTeX positions words with offsets instead of emitting space glyphs, and
+% threshold extractors drop the gap at every \textbf boundary ("PandasETL",
+% "aproductiontax"). This emits a real space character between words.
+\pdfinterwordspaceon
+
+%---- PARSING FIX 2 -----------------------------------------------------------
+% \nk = "no kern". Terminates TeX's implicit kern between two letters. Your bold
+% headings carried kerns of 96-131/1000 em, which threshold-based extractors read
+% as a SPACE -- producing "Co-F ounder", "A WS", "F rameworks", "T ools",
+% "T racker", "F undamentals". Note AWS broke in the headings but survived in
+% body text, so a spot check missed it entirely.
+\newcommand{\nk}{\kern0pt}
+
+%---- PARSING FIX 3 -----------------------------------------------------------
+% Text-font separator. Use \pipe instead of $|$ everywhere.
+\newcommand{\pipe}{\textbar{}}
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-3pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{#2} \\   % date BOLD: same font run as the title, so the
+                                     % column jump is not split by a \Tf switch
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+% One-line entry: title --- company on the left, date on the right. Use for roles
+% with no bullets, where the standard two-line \resumeSubheading would leave a
+% visible blank and its trailing \vspace{-7pt} would collide with the next heading.
+\newcommand{\resumeSubheadingOneLine}[3]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1 --- #2} & \textbf{#3} \\   % all bold: no font switch anywhere on the line
+    \end{tabular*}\vspace{-3pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \small\emph{#2} \\   % date must match #1's font AND SIZE. \small applies
+                                     % only inside its own cell, so an unsized #2 landed at
+                                     % normalsize -- a different font -> \Tf switch -> lost space.
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-7pt}}
+
+% === VARIANT: backend — Backend / fullstack ===
+% Adorus bullets kept: A, C, E  |  cut: B, D
+% Generated by make_variants.py, then TAILORED Sept 13 2026 for Pylon SWE Intern (SF, on-site):
+% agentic B2B support platform; JD = full-stack product features, AI, end-to-end ownership,
+% startups, React/Go/GraphQL/AWS. Adorus re-cut from the build record (RESUME-DETAILS.md):
+% solo full-stack scope, AI retrieval, CORS outage, 590 tests + API-contract gate. Tax bug and
+% Social Network cut; MCP bullet leads HerbsPro. Go/GraphQL NOT claimed. Nothing invented.
+% Template is IDENTICAL to the master; only bullet content differs.
+% TAILORED for Figma (from Pylon): full-stack scope, retrieval, CORS outage, 590 tests + API-contract gate; product/platform interests; JavaScript first.
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Shayan Poigai} \\ \vspace{2pt}
+    \small Fremont, CA \pipe{} (510) 738-8155 \pipe{} \href{mailto:spoigai21@gmail.com}{spoigai21@gmail.com} \pipe{} U.S. citizen \\ \vspace{2pt}
+    \small \href{https://shayanpoigai.dev/}{shayanpoigai.dev} \pipe{}
+    \href{https://www.linkedin.com/in/shayanpoigai/}{linkedin.com/in/shayanpoigai} \pipe{}
+    \href{https://github.com/spoigai21}{github.com/spoigai21}
+\end{center}
+
+%----------EDUCATION----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Santa Clara University --- B.S. in Computer Science}{Expected December 2027}
+      {GPA: 3.9}{Available Summer 2027 (Fall 2027 term remaining)}
+      % Coursework line added to answer the one gap the reframing cannot: the systems
+      % signal on this page is all self-taught. Operating Systems leads deliberately --
+      % it is the course a reader scans for. In progress Fall 2026, complete before any
+      % January interview, so listing it is accurate for an enrolled student. NOTE: once
+      % it is here, expect questions on scheduling, virtual memory, and deadlock.
+      \resumeItemListStart
+        \resumeItem{\textbf{Relevant Coursework}: Operating Systems, Advanced C++, Advanced Algorithms, Data Structures \& Algorithms, Theory of Automata, Discrete Mathematics}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+% The availability line answers the conferral/eligibility gate directly -- the
+% one genuinely mechanical filter in this pipeline. It costs zero vertical space
+% because it fills the 4th argument, which was empty.
+
+%----------EXPERIENCE----------
+\section{Work Experience}
+  \resumeSubHeadingListStart
+
+    % DESCRIPTORS CONSIDERED AND REJECTED, Aug 20 2026. Both employers are
+    % out-of-vocabulary, so a reader reconstructs what they are from the bullets --
+    % and the available evidence is SKU, stock, pick tickets, supplier, try-on, tax,
+    % shipping, Stripe, inventory. The inference lands on "two small online stores."
+    % The obvious fix -- an inline descriptor -- does not work here, because the
+    % honest descriptor for each one CONFIRMS that read: "e-commerce supplements
+    % retailer" and "4-person jewelry startup" both make the page more retail, not
+    % less. A descriptor only helps if it carries SCALE (headcount, eng-team size,
+    % order volume, traffic). The one scale figure available, 50,000+ SKUs, is
+    % already in bullet 1. So: no descriptors unless a real headcount or volume
+    % number turns up. Reversing this without a number would be a net loss.
+    %
+    % HerbsPro leads the shipped roles. It is the only role where someone else hired you and
+    % reviewed your work, and the title normalizes cleanly to an IC/intern node.
+    % Leading with "Co-Founder" put your CURRENT title in the founder/executive
+    % cluster, which makes trajectory models predict CTO instead of intern.
+    \resumeSubheading
+      {Software Engineering Intern}{June 2026 -- August 2026}
+      {HerbsPro}{}
+      \resumeItemListStart
+        % NOTE: the "30% reduction in manual WMS work" claim is removed. You started
+        % in June; measuring that needs a baseline predating your tenure, and an
+        % unsourced number that collapses under questioning takes every other metric
+        % on this page down with it.
+        % RESOLVED Aug 18 2026: shipping these two bullets as-is, no added detail.
+        % Both remaining numbers are measurable and defensible, which is the bar.
+        \resumeItem{Built a Python MCP server (FastMCP) as the only access path for LLM agents into a legacy MySQL WMS: read tools for live stock, write tools emitting split-shipment pick tickets instead of raw table mutations.}
+        % Both numbers here are legitimately measurable, unlike the 30% that was cut.
+        % Be ready to say where each came from: the 60% from slow-query counts or
+        % Redis hit rate over a defined pre/post window, and the p50 from whatever
+        % tool you read it out of. If you only have an average, change "p50 latency"
+        % back to "average response time" -- an accurate average beats a percentile
+        % you cannot defend.
+        \resumeItem{Cut MySQL query volume 60\% and product API p50 from 200\,ms to 90\,ms with a cache-aside Redis layer using event-driven invalidation across a 50,000+ SKU catalog.}
+        % REWRITTEN Aug 20 2026. This was the only bullet on the page that read as
+        % business operations rather than engineering. Two problems, both in the tail:
+        % "for brand analysis and contracting" describes what the business did with the
+        % output, not what was built, and it was the densest retail-ops phrasing in the
+        % top half of the page. Now leads with the data-engineering move (normalize ->
+        % fixed schema) and stops at the artifact. Every fact is retained: Pandas, ETL,
+        % 150+, unstructured, normalization, supplier-term extraction, structured output.
+        % ~18 characters shorter, so page fit is unaffected.
+        \resumeItem{Built a Pandas \textbf{ETL pipeline} that normalized 150+ unstructured meeting notes into a fixed schema, extracting supplier terms into structured records.}
+      \resumeItemListEnd
+
+    % Title reordered so both the whole-string embedding and the split-on-"&"
+    % first token resolve into the IC cluster instead of the founder cluster.
+    % URL REMOVED Aug 19 2026: adorusjewels.com still serves a coming-soon page. The
+    % bullets describe a built platform, so printing the URL invited a reviewer to
+    % click and see a waitlist form -- the contradiction, not the placeholder, was the
+    % problem. DNS deliberately left alone; a company with no web presence reads worse
+    % than a pre-launch one. Put the URL back the day it actually launches.
+    \resumeSubheading
+      {Software Engineer}{May 2026 -- Present}
+      {Adorus}{}
+      \resumeItemListStart
+        % CUT: "Sole developer on a 4-person founding team, translating co-founder and
+        % stakeholder feedback ... across 6 development phases." Self-contradictory to a
+        % reader (co-founder AND sole developer -- what do the other three do?),
+        % "stakeholder feedback" on a 4-person student venture means your three friends,
+        % and "6 development phases" is content-free.
+        % Rebuilt from the strongest material across your other resume versions.
+        % Ordered most-meaningful to least: judgment > debugging > architecture > stack.
+        %
+        % NUMBER CONFLICTS RESOLVED Sept 13 2026 from his complete Adorus build record
+        % (RESUME-DETAILS.md, authoritative): 80 Flyway migrations, 24 bounded modules,
+        % crop model YOLO11-pose (ONNX), ~1.3 GB model vs ~258 MB free on EC2. Retired:
+        % the 9/33-migration and 30+/35-endpoint counts, "5 AWS services at ~$40/month",
+        % Keypoint R-CNN, 906 MB, and $0 incremental hosting. Also sync GPA (3.9 here vs "Major GPA 4.0" elsewhere)
+        % and grad date ("December 2027" here vs "Fall 2027" elsewhere).
+        % ADDED Aug 21 2026. Leads Adorus: it is the strongest judgment bullet on the
+        % page and the single best answer to the retail-density problem, because it puts
+        % real computer-vision and retrieval work in the top half where every commerce
+        % noun currently clusters. Merged from two drafts into one bullet at his request.
+        %
+        % Vocabulary chosen to de-retail without losing a fact: "image-retrieval
+        % pipeline" not "visual product search"; "worn-object region" not "jewelry
+        % region"; "correct match" not "correct product"; the "DTC e-commerce store"
+        % framing dropped entirely. All are the actual CV/IR terms, so this is register,
+        % not euphemism.
+        %
+        % CUT TO FIT THE SINGLE BULLET, all preserved in RESUME-DETAILS.md:
+        %   - the 0.014 similarity band across the uncropped top-4. This is the best
+        %     detail in the whole project (a quantified NULL result -- the baseline had
+        %     no discriminative signal at all), but it needs the two-bullet version.
+        %   - the Lambda decision: the model needs ~1.3 GB resident vs ~258 MB free on EC2,
+        %     where a failed allocation would let the OOM killer take the JVM and the storefront.
+        % Both are interview material. Have them ready; they are stronger spoken.
+        %
+        % DELIBERATELY NOT USED: the "+72%" from his third draft. A cosine-similarity
+        % delta is not a percentage improvement, and the figure reads as if derived from
+        % the 0.72 value itself. Per section 5, one number that collapses under
+        % questioning discredits every other number on the page.
+        %
+        % NO MATH MODE ANYWHERE IN THIS BULLET. An arrow would pull \rightarrow from
+        % CMSY and reintroduce exactly the font-switch parse bug section 4 fixed for the
+        % $|$ pipes. "from rank 3 to rank 1" is spelled out on purpose.
+        % UPDATED Aug 25 2026: inference deployed to Lambda. The serving clause now names
+        % the platform instead of describing the effect ("keep models off the request
+        % path"), because the platform IS the decision and it is the half that matters to
+        % an infrastructure JD. Note A\nk WS, not AWS -- every non-URL occurrence in this
+        % file carries the kern guard from section 4. Plain "AWS" here would be the only
+        % unguarded one on the page.
+        \resumeItem{Built the production platform from scratch, solo (530 commits): a Java 21 Spring Boot backend of \textbf{24 bounded modules}, a React + Vite storefront, and PostgreSQL on A\nk WS behind CloudFront, owning every layer from schema to CDN.}
+        \resumeItem{Built a \textbf{two-stage image-retrieval pipeline} (PyTorch, CLIP ViT-B/32) that crops queries to the worn-object region with YOLO11-pose (ONNX), moving the correct match from rank 3 to rank 1; inference runs in A\nk WS Lambda with catalog embeddings precomputed and ranked by cosine similarity in Postgres.}
+        % CUT for Pylon: resumeItem{Fixed a \textbf{production} tax bug that folded tax into shipping totals, re-sourcing amounts from Stripe's API with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment failure.}
+        \resumeItem{Diagnosed a \textbf{production} checkout outage from one customer screenshot: an apex-only CORS allowlist made every POST from the www host return 403, which CloudFront rewrote into a 200 carrying HTML; traced it through nginx logs to 97 failed requests from 19 visitors and fixed it at the CDN and origin.}
+        \resumeItem{Built \textbf{590 automated tests} with PIT mutation testing in CI and a custom API-contract gate checking every frontend /api call against the backend's request mappings, catching route drift at review time.}
+      \resumeItemListEnd
+
+
+    \resumeSubheading
+      {AI/ML Research Assistant}{Dec 2025 -- June 2026}
+      {Santa Clara University}{}
+      \resumeItemListStart
+        % Name the paper type (full paper / short communication / abstract) -- you will
+        % be asked, and volunteering it reads as confidence rather than hedging.
+        % ACCURACY: the paper is ACCEPTED, not published -- proceedings have not appeared
+        % yet. Never write "published" or "presented" until each is literally true; a
+        % reviewer with a research background will check, and the distinction is exactly
+        % the kind of thing that costs you the room. You are also not the one presenting,
+        % so nothing here claims a presentation.
+        % If space is tight, drop the subtitle and keep "Public Perceptions of ChatGPT as
+        % a Therapist-Like Tool" -- the methodology keywords are already in the next bullet.
+        \resumeItem{Co-author and primary writer of \emph{Public Perceptions of ChatGPT as a Therapist-Like Tool}, accepted at HI-\nk BI-\nk BI 2026 (ASONAM-collocated); proceedings forthcoming with Springer.}
+        \resumeItem{Analyzed 5,000+ scraped Twitter, Reddit, and YouTube posts with an NLP and \textbf{machine learning} pipeline comparing BERTopic, LDA, and NMF to measure sentiment toward LLMs as a therapeutic tool.}
+        % CUT: "Engineered Pandas preprocessing to normalize unstructured text." That is
+        % df.str.lower() dressed up, and every reviewer knows it.
+      \resumeItemListEnd
+
+    % TA restored from the Workday DOCX, where it had been parked for page space.
+    % Rationale for spending the lines: with HerbsPro, it is one of only two entries
+    % awarded by an outside party with something at stake -- a department selected him
+    % to teach and to grade. Adorus and the projects he issued himself. It also covers
+    % Sept 2025 - June 2026, otherwise blank before HerbsPro.
+    % Title is "Lab Teaching Assistant (C++)" per his instruction, matching the Netflix
+    % reference resumes. "Algorithms Grader" was dropped from the title. The grading
+    % bullet is also cut -- grading is not engineering. What remains is live debugging,
+    % a stated preferred qualification in most of his target JDs.
+    \resumeSubheading
+      {Lab Teaching Assistant (C++)}{Sept 2025 -- June 2026}
+      {Santa Clara University}{}
+      \resumeItemListStart
+        \resumeItem{Mentored 40+ students in C++ memory management, pointers, and object-oriented design, \textbf{debugging} logic and memory errors live with GDB.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%----------PROJECTS----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      % Project titles are the hyperlinks now. The old right-aligned "Github"
+      % label produced the line "Github Oct 2025", which an employer/date
+      % extractor can register as a phantom employer named Github.
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/spoigai21/internship-monitor}{Internship Monitor}} \pipe{} \emph{Python, SQLite, GitHub Actions, pytest}}{2026}
+          \resumeItemListStart
+            \resumeItem{Co-built a Python job monitor tracking 106 companies across 17 job-board types; added the Simplify, Oracle, and SmartRecruiters parsers to a 308-test suite.}
+            \resumeItem{Suppressed repeat alerts with a normalized employer-plus-title dedup key after finding \textasciitilde2,900 of 14,808 listings were reposts issued under new job IDs.}
+          \resumeItemListEnd
+
+      % Hackathon framing removed from the title and bullets -- it is a Projects
+      % section, so nobody assumes these were jobs, and the weekend-build context was
+      % costing more than it explained. This is NOT a denial: if you are asked where it
+      % came from, say it was an AWS hackathon. And if you placed, add the placement --
+      % that turns it into an external ranking, which is worth more than the tech list.
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/tatertotbot/AWS-Inrix-2025}{Disease T\nk racker}} \pipe{} \emph{FastAPI, A\nk WS Bedrock, DynamoDB}}{Oct 2025}
+          \resumeItemListStart
+            \resumeItem{Built the FastAPI backend for a 6-person team: disease-metric endpoints over DynamoDB and a county risk-scoring endpoint calling Claude on A\nk WS Bedrock.}
+          \resumeItemListEnd
+      % CUT for Pylon fit (one page): Social Network (C++, Qt, BFS) project.
+
+
+
+
+    \resumeSubHeadingListEnd
+
+%----------TECHNICAL SKILLS----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Java, JavaScript, Python, SQL, C++} \\
+     \textbf{F\nk rameworks \& T\nk ools}{: React.js (Vite), Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, GitHub Actions (CI/CD), nginx, Vercel, Render, REST/RESTful APIs, Stripe} \\
+     \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront, Lambda), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
+     % PyTorch and computer vision added Aug 21 2026 alongside the retrieval bullet.
+     % PyTorch was a first-tier keyword missing from the page entirely, and a skill
+     % asserted in a bullet but absent from Skills is the kind of gap a keyword
+     % matcher punishes for no reason.
+     \textbf{AI / ML}{: Machine Learning, NLP, computer vision, RAG, MCP, PyTorch, CLIP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
+     \textbf{Quantum}{: Qiskit, IBM Quantum} \\
+    }}
+ \end{itemize}
+
+% Cut the "Others" line. VS Code and IntelliJ are not skills; Hotjar is a
+% marketing product; and "Claude Code" signals "I use AI to write code" to a
+% reviewer already suspicious the resume was AI-written. Stripe moved into Tools.
+%   EXCEPTION: Amazon's SDE Intern JD literally lists "AI tools for development
+%   productivity" as a preferred qualification. For the AMAZON version only,
+%   add Claude Code back to Frameworks & Tools.
+% Qiskit/IBM Quantum were dropped from Skills because the Kuhn Poker project proved
+% them. That project is now cut, so the Skills entry was RESTORED at his request and
+% is now asserted without an artifact on the page. Be ready to describe the 6-qubit
+% variational circuit and the 4,096-shot run on IBM hardware from memory -- the repo
+% still exists at github.com/spoigai21/kuhn-quantum-poker if asked for proof.
+
+\end{document}
+
+%==============================================================================
+%  VERIFY THE PARSING FIX after rebuilding:
+%
+%    python -c "import pypdf; t=pypdf.PdfReader('ShayanPoigaiResume1.pdf').pages[0].extract_text(); \
+%      print([s for s in ['A WS','Co-F ','F ramew','T ools','T rack','F undam'] if s in t])"
+%
+%  Must print []  -- an empty list.
+%==============================================================================
