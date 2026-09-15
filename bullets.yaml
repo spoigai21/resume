@@ -1,0 +1,291 @@
+# Bullet bank for tailor.py. Every bullet here is VERIFIED - wording comes from the
+# master resume, the shipped company copies, or RESUME-DETAILS.md (authoritative).
+# Do not add a bullet whose facts are not in RESUME-DETAILS.md.
+#
+# LaTeX rules still apply inside `text`: A\nk WS (not AWS), \pipe{} (not $|$),
+# \% for percent, \textasciitilde for ~, no math mode.
+#
+# tags      -> matched against the focus weights (from --focus and/or the JD text)
+# prior     -> tie-breaker; higher = shown in the general resume. 0 = only when a JD asks.
+# group     -> at most one bullet per group is selected (alternate phrasings of one fact)
+# verify    -> printed as a warning whenever the bullet is selected
+# On hold / excluded (do NOT add): NBA betting analysis, any stock project, Countera.
+
+roles:
+  - id: herbspro
+    title: Software Engineering Intern
+    dates: June 2026 -- August 2026
+    org: HerbsPro
+    min: 1
+    max: 3
+    bullets:
+      - id: hp-redis
+        prior: 9
+        tags: [backend, performance, database, caching, infra, sql]
+        text: |-
+          Cut MySQL query volume 60\% and product API p50 from 200\,ms to 90\,ms with a cache-aside Redis layer using event-driven invalidation across a 50,000+ SKU catalog.
+      - id: hp-mcp
+        prior: 8
+        tags: [ai, llm, agents, backend, python, database, mcp]
+        text: |-
+          Built a Python MCP server (FastMCP) as the only access path for LLM agents into a legacy MySQL WMS: read tools for live stock, write tools emitting split-shipment pick tickets instead of raw table mutations.
+      - id: hp-etl
+        prior: 7
+        tags: [data, etl, python, analytics, automation, ml]
+        text: |-
+          Built a Pandas \textbf{ETL pipeline} that normalized 150+ unstructured meeting notes into a fixed schema, extracting supplier terms into structured records.
+
+  - id: adorus
+    title: Software Engineer
+    dates: May 2026 -- Present
+    org: Adorus
+    min: 2
+    max: 4
+    bullets:
+      - id: ad-retrieval
+        group: retrieval
+        prior: 10
+        tags: [ml, cv, ai, python, cloud, search, deep-learning]
+        text: |-
+          Built a \textbf{two-stage image-retrieval pipeline} (PyTorch, CLIP ViT-B/32) that crops queries to the worn-object region with YOLO11-pose (ONNX), moving the correct match from rank 3 to rank 1; inference runs in A\nk WS Lambda with catalog embeddings precomputed and ranked by cosine similarity in Postgres.
+      - id: ad-retrieval-short
+        group: retrieval
+        prior: 0
+        tags: [mobile, product, frontend]
+        text: |-
+          Shipped search by photo: a YOLO11-pose crop and CLIP embeddings moved the correct match from rank 3 to rank 1, with inference running in A\nk WS Lambda.
+      - id: ad-platform
+        group: architecture
+        prior: 6
+        tags: [fullstack, backend, frontend, java, cloud, infra, ownership, web]
+        text: |-
+          Built the production platform from scratch, solo (530 commits): a Java 21 Spring Boot backend of \textbf{24 bounded modules}, a React + Vite storefront, and PostgreSQL on A\nk WS behind CloudFront, owning every layer from schema to CDN.
+      - id: ad-backend-service
+        group: architecture
+        prior: 5
+        tags: [backend, java, database, infra, reliability, sql]
+        text: |-
+          Built and operate a Java 21 Spring Boot backend of \textbf{24 bounded modules} over PostgreSQL (A\nk WS RDS), with 80 Flyway migrations applied live with zero downtime.
+      - id: ad-tax
+        prior: 7
+        tags: [backend, testing, payments, fintech, debugging]
+        text: |-
+          Fixed a \textbf{production} tax bug that folded tax into shipping totals, re-sourcing amounts from Stripe's API with 3 regression \textbf{tests}; hardened a Flyway migration against a cross-environment failure.
+      - id: ad-s3
+        prior: 6
+        tags: [security, cloud, infra, aws, caching]
+        text: |-
+          Served private S3 imagery only through CloudFront with Origin Access Control and object-scoped IAM, \textbf{invalidating edge caches on delete} so removed assets stop serving before TTL expiry.
+      - id: ad-cors
+        prior: 4
+        tags: [debugging, reliability, infra, networking, fullstack, web, operations]
+        text: |-
+          Diagnosed a \textbf{production} checkout outage from one customer screenshot: an apex-only CORS allowlist made every POST from the www host return 403, which CloudFront rewrote into a 200 carrying HTML; traced it through nginx logs to 97 failed requests from 19 visitors and fixed it at the CDN and origin.
+      - id: ad-tests
+        prior: 4
+        tags: [testing, quality, ci, backend, fullstack, devtools]
+        text: |-
+          Built \textbf{590 automated tests} with PIT mutation testing in CI and a custom API-contract gate checking every frontend /api call against the backend's request mappings, catching route drift at review time.
+      - id: ad-tryon-gemini
+        group: tryon
+        prior: 5
+        tags: [ai, genai, ml, llm]
+        text: |-
+          Shipped AI virtual try-on on a reference-conditioned Gemini model at \textasciitilde\$0.05/image, with measurement-driven prompting that parses per-item dimensions into true-to-life scale and physically accurate drape.
+      - id: ad-tryon-product
+        group: tryon
+        prior: 0
+        tags: [frontend, mobile, product, fullstack, privacy]
+        text: |-
+          Shipped an \textbf{AI try-on feature} end to end: photo upload and live camera capture in React, asynchronous generation jobs, and a credit system, with a guarantee that no customer photo is ever persisted.
+      - id: ad-storefront
+        prior: 0
+        tags: [frontend, web, mobile, react, fullstack, seo]
+        text: |-
+          Built a \textbf{92-module React + Vite storefront} across 41 indexable routes, with client-side routing, a guest cart on a 30-day httpOnly cookie, and static metadata for crawlers and social scrapers that never execute JavaScript.
+      - id: ad-lambda
+        prior: 0
+        tags: [deployment, cloud, infra, ml, reliability, serverless, aws]
+        text: |-
+          Deployed the CLIP embedder to A\nk WS Lambda as a container image with weights baked in, since the model needs \textasciitilde1.3\,GB resident against \textasciitilde258\,MB free on the EC2 host, where an OOM kill would take down the storefront.
+      - id: ad-analytics
+        prior: 0
+        tags: [data, analytics, privacy, measurement]
+        text: |-
+          Built cookieless first-party analytics that counts every visitor (153 people and 794 page views in its first 20 days live) where GA4 cannot: only 32 of 153 accepted cookies, so GA4 saw roughly a fifth of real traffic.
+      - id: ad-decompression
+        prior: 0
+        tags: [security, appsec, backend]
+        text: |-
+          Closed a \textbf{decompression-bomb} vulnerability in image upload (a 102\,KB PNG allocated 134\,MB on a 192\,MB heap) by reading headers first and subsampling, cutting it to 40\,MB; fixed X-Forwarded-For spoofing and added IPv6 /64-aware rate limits.
+      - id: ad-webhook
+        prior: 0
+        tags: [payments, fintech, event-driven, backend, distributed]
+        text: |-
+          Created orders from Stripe's \textbf{checkout.session.completed webhook} rather than the client redirect, so a closed tab never loses a paid order; per-variant stock decrements only on paid orders.
+
+  - id: research
+    title: AI/ML Research Assistant
+    dates: Dec 2025 -- June 2026
+    org: Santa Clara University
+    min: 1
+    max: 2
+    bullets:
+      - id: rs-paper
+        prior: 9
+        tags: [research, nlp, ai, writing, llm]
+        text: |-
+          Co-author and primary writer of \emph{Public Perceptions of ChatGPT as a Therapist-Like Tool}, accepted at HI-\nk BI-\nk BI 2026 (ASONAM-collocated); proceedings forthcoming with Springer.
+      - id: rs-nlp
+        prior: 8
+        tags: [ml, nlp, data, python, analytics, research]
+        text: |-
+          Analyzed 5,000+ scraped Twitter, Reddit, and YouTube posts with an NLP and \textbf{machine learning} pipeline comparing BERTopic, LDA, and NMF to measure sentiment toward LLMs as a therapeutic tool.
+
+  - id: ta
+    title: Lab Teaching Assistant (C++)
+    dates: Sept 2025 -- June 2026
+    org: Santa Clara University
+    min: 1
+    max: 1
+    bullets:
+      - id: ta-debug
+        prior: 5
+        tags: [cpp, debugging, systems, teaching, oop]
+        text: |-
+          Mentored 40+ students in C++ memory management, pointers, and object-oriented design, \textbf{debugging} logic and memory errors live with GDB.
+
+projects:
+  max: 3
+  min: 1
+  items:
+    - id: pr-monitor
+      prior: 9
+      tags: [python, backend, data, testing, automation, scraping, reliability, devtools]
+      heading: '\textbf{\href{https://github.com/spoigai21/internship-monitor}{Internship Monitor}} \pipe{} \emph{Python, SQLite, GitHub Actions, pytest}'
+      date: '2026'
+      min: 1
+      max: 2
+      bullets:
+        - id: pm-scale
+          prior: 9
+          tags: [python, testing, scraping, automation]
+          text: |-
+            Co-built a Python job monitor tracking 106 companies across 17 job-board types; added the Simplify, Oracle, and SmartRecruiters parsers to a 308-test suite.
+        - id: pm-dedup
+          prior: 8
+          tags: [data, backend, entity-resolution, analytics]
+          text: |-
+            Suppressed repeat alerts with a normalized employer-plus-title dedup key after finding \textasciitilde2,900 of 14,808 listings were reposts issued under new job IDs.
+    - id: pr-disease
+      prior: 8
+      tags: [ai, llm, cloud, backend, aws, api]
+      heading: '\textbf{\href{https://github.com/tatertotbot/AWS-Inrix-2025}{Disease T\nk racker}} \pipe{} \emph{FastAPI, A\nk WS Bedrock, DynamoDB}'
+      date: Oct 2025
+      min: 1
+      max: 1
+      bullets:
+        - id: pd-backend
+          prior: 8
+          tags: [backend, ai, cloud]
+          text: |-
+            Built the FastAPI backend for a 6-person team: disease-metric endpoints over DynamoDB and a county risk-scoring endpoint calling Claude on A\nk WS Bedrock.
+    - id: pr-social
+      prior: 7
+      tags: [cpp, algorithms, graphs, systems, oop, desktop]
+      heading: '\textbf{\href{https://github.com/spoigai21/socialnetwork}{Social Network}} \pipe{} \emph{C++, Qt, Graphs}'
+      date: '2025'
+      min: 1
+      max: 1
+      bullets:
+        - id: ps-graph
+          prior: 7
+          tags: [cpp, algorithms, graphs]
+          text: |-
+            Built a C++ Qt social app over an adjacency-set friend graph, ranking friend suggestions by mutual-friend count, with BFS shortest-path search and file persistence.
+    - id: pr-kuhn
+      prior: 0
+      tags: [quantum, quant, optimization, research, python, game-theory]
+      heading: '\textbf{\href{https://github.com/spoigai21/kuhn-quantum-poker}{Kuhn Poker vs Quantum}} \pipe{} \emph{Python, Qiskit, FastAPI, React}'
+      date: '2026'
+      min: 1
+      max: 1
+      bullets:
+        - id: pk-vqc
+          prior: 0
+          tags: [quantum, optimization, quant]
+          text: |-
+            Built a Kuhn poker AI whose bet and call probabilities come from a 12-parameter, 6-qubit variational circuit, optimized with COBYLA over 5 restarts to minimize exploitability across all 64 pure opponent strategies; verified on IBM hardware at 4,096 shots.
+
+# Languages line: ordered by how many focus tags each language matches.
+languages:
+  - name: Python
+    tags: [python, ml, ai, data, etl, analytics, llm, cv, quant, automation]
+  - name: SQL
+    tags: [sql, data, database, analytics, etl]
+  - name: Java
+    tags: [java, backend, android, oop, distributed]
+  - name: JavaScript
+    tags: [javascript, frontend, fullstack, web, react]
+  - name: C++
+    tags: [cpp, systems, algorithms, embedded, performance]
+default_languages: [C++, Python, Java, JavaScript, SQL]
+
+# JD keyword -> tag. Matched case-insensitively on word boundaries; each tag's
+# weight is its hit count (capped). --focus tags are added on top with a big weight.
+tag_keywords:
+  python: [python, pandas, numpy, jupyter, scikit-learn, sklearn, pytorch]
+  java: [java, spring, spring boot, kotlin, jvm]
+  javascript: [javascript, typescript, node, node.js, react, vue, angular]
+  cpp: [c++, cpp, embedded, low-level, rtos]
+  sql: [sql, postgres, postgresql, mysql, relational]
+  backend: [backend, back-end, back end, api, apis, microservices, server-side, distributed systems, services]
+  frontend: [frontend, front-end, front end, ui, user interface, css, html, react]
+  fullstack: [full stack, full-stack, fullstack]
+  web: [web, web applications, browser]
+  mobile: [mobile, ios, android, swift, kotlin, swiftui, jetpack]
+  android: [android, kotlin, jetpack]
+  data: [data, data engineering, data pipelines, pipelines, big data, data platform, datasets, warehouse, snowflake, spark, pyspark, airflow, dbt]
+  etl: [etl, elt, ingest, ingestion, transform, data pipelines]
+  analytics: [analytics, analysis, dashboards, metrics, visualization, a/b test, experiment]
+  database: [database, databases, sql, nosql, dynamodb, redis, schema]
+  ml: [machine learning, ml, models, model, deep learning, neural networks, classification, regression, clustering, training]
+  deep-learning: [deep learning, neural networks, pytorch, tensorflow]
+  cv: [computer vision, machine vision, vision, image, images, imaging, object detection, defect]
+  ai: [ai, artificial intelligence, generative ai, genai, llm, llms, agents, agentic]
+  genai: [generative ai, genai, diffusion, image generation]
+  llm: [llm, llms, large language model, large language models, rag, prompt, gpt, claude, gemini]
+  agents: [agent, agents, agentic, mcp, tool use]
+  nlp: [nlp, natural language, text, language models]
+  research: [research, publication, paper, experiments, phd, scientist]
+  cloud: [cloud, aws, gcp, azure, serverless, lambda, s3, ec2]
+  aws: [aws, amazon web services, lambda, s3, ec2, dynamodb, bedrock]
+  serverless: [serverless, lambda]
+  infra: [infrastructure, platform, devops, kubernetes, docker, deployment, cdn, networking, sre]
+  deployment: [deployment, deploy, production, release, benchmarking, benchmark]
+  reliability: [reliability, scalability, scalable, availability, incident, on-call, monitoring, observability, stability]
+  operations: [operations, incident, on-call, troubleshooting]
+  debugging: [debugging, debug, troubleshoot, troubleshooting, defects, root cause]
+  testing: [testing, tests, unit test, unit testing, automated testing, test automation, qa, quality]
+  quality: [code quality, code review, clean code, best practices]
+  ci: [ci, ci/cd, continuous integration, github actions, jenkins, travis]
+  devtools: [tooling, developer tools, git, version control]
+  security: [security, secure, cybersecurity, authentication, identity, encryption, vulnerability, threat, fraud, abuse]
+  appsec: [application security, appsec, vulnerability, secure development, owasp]
+  privacy: [privacy, data protection, gdpr, consent]
+  payments: [payments, payment, stripe, billing, transactions]
+  fintech: [fintech, financial, finance, banking, credit, risk]
+  performance: [performance, latency, caching, optimization, optimize, efficiency]
+  caching: [cache, caching, redis, cdn]
+  automation: [automation, automate, scripting, scripts]
+  scraping: [scraping, crawler, crawl]
+  algorithms: [algorithms, data structures, algorithm]
+  systems: [systems programming, operating systems, memory management, concurrency, low-level]
+  oop: [object-oriented, object oriented, oop]
+  quant: [quantitative, quant, trading, statistics, stochastic, probability]
+  quantum: [quantum, qiskit]
+  optimization: [optimization, operations research, solver]
+  product: [product, user experience, customers, consumer]
+  seo: [seo, search engine]
+  event-driven: [event-driven, webhooks, kafka, queues, messaging]
+  distributed: [distributed, distributed systems, microservices, scale]

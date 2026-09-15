@@ -1,0 +1,70 @@
+{
+  "company": "Oshkosh",
+  "focus": [
+    "cpp",
+    "cv",
+    "debugging",
+    "python"
+  ],
+  "weights": {
+    "python": 10,
+    "cpp": 10,
+    "web": 1,
+    "mobile": 1,
+    "data": 1,
+    "ml": 1,
+    "cv": 9,
+    "deployment": 1,
+    "operations": 1,
+    "debugging": 10,
+    "testing": 4,
+    "performance": 1,
+    "algorithms": 1,
+    "product": 1
+  },
+  "languages": "C++, Python, Java, SQL, JavaScript",
+  "roles": {
+    "herbspro": [
+      "hp-etl",
+      "hp-mcp",
+      "hp-redis"
+    ],
+    "adorus": [
+      "ad-retrieval",
+      "ad-tax",
+      "ad-cors",
+      "ad-tests"
+    ],
+    "research": [
+      "rs-nlp",
+      "rs-paper"
+    ],
+    "ta": [
+      "ta-debug"
+    ]
+  },
+  "projects": {
+    "pr-monitor": [
+      "pm-scale",
+      "pm-dedup"
+    ],
+    "pr-social": [
+      "ps-graph"
+    ],
+    "pr-kuhn": [
+      "pk-vqc"
+    ]
+  },
+  "added_vs_general": [
+    "ad-cors",
+    "ad-tests",
+    "pk-vqc",
+    "pr-kuhn"
+  ],
+  "removed_vs_general": [
+    "ad-platform",
+    "ad-s3",
+    "pd-backend",
+    "pr-disease"
+  ]
+}

@@ -1,0 +1,253 @@
+%==============================================================================
+%  SYSTEMS VARIANT -- forked from the master after the Amazon build.
+%
+%  PROBLEM THIS FILE SOLVES: two Adorus bullets made the page read as a CRUD web
+%  app -- REST endpoints, Stripe, auth, S3 uploads, an ORM over Postgres. That is
+%  the shape of every portfolio project, so a reader pattern-matches to it and the
+%  ceiling drops no matter how good the rest is. NOT a domain problem: e-commerce
+%  is fine, and for Amazon it is an asset. A register problem.
+%
+%  RULE APPLIED THROUGHOUT: lead with the DECISION, not the product. Same facts,
+%  same numbers, nothing invented -- only what is foregrounded changes.
+%
+%  Deltas from master:
+%   1. Adorus "automated the post-purchase lifecycle" -> named as a 6-state order
+%      machine driven by untrusted external callbacks. Identical work; "automated
+%      the lifecycle" is how a PM describes it, a state machine is how it is built.
+%   2. The 13-technology stack-dump bullet is split. The access-control and cache
+%      -invalidation decision leads on its own; scope survives as a second, shorter
+%      bullet instead of being the point. Every technology in the dump already
+%      appears verbatim under Technical Skills, so nothing is lost.
+%   3. Skills: REVERTED to the original grouping at his request. The "Systems" row
+%      and the CS Fundamentals row are both gone -- coursework covers the latter.
+%      Quantum kept as its own row (Qiskit, IBM Quantum) even though the Kuhn Poker
+%      project that proved it was cut. See the note at the Skills block.
+%   5. (Aug 20 2026) Retail-density pass. The two commerce employers occupy ~20 of
+%      ~61 rendered lines -- the entire band between Education and the midpoint --
+%      so every retail noun a reader meets is front-loaded. Load-bearing ones kept
+%      (SKU catalog is scale evidence; pick tickets are what make the MCP bullet
+%      good; Stripe and shipping totals are the tax bug). Two free ones removed:
+%      the ETL bullet's business-ops tail and "post-purchase". Inline company
+%      descriptors were considered and REJECTED -- see the note above HerbsPro.
+%
+%   4. Bullets tightened ~700 chars across all 13 to reach one page. Nothing factual
+%      was dropped, only the qualifier layer. The Netflix reference resumes state a
+%      thing once per bullet; that is the standard being matched.
+%
+%  THE THROUGH-LINE THIS CREATES: cache-aside invalidation at HerbsPro, CDN edge
+%  invalidation at Adorus, and the repost-dedup key on Internship Monitor are all
+%  the same problem -- knowing when cached or duplicated state has gone stale. That
+%  reads as a person with a systems instinct rather than three unrelated jobs. If
+%  asked "what are you good at," this is the answer, and it is genuinely true.
+%
+%  Compile with pdflatex, then run the parse check at the bottom. Must print [].
+%==============================================================================
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+
+%---- PARSING FIX 1 -----------------------------------------------------------
+% T1 + Latin Modern. This is what lets \textbar and \textasciitilde come from
+% the TEXT font instead of the math fonts. Your old "$|$" pulled the pipe from
+% CMSY9 and the tilde from a 1-glyph math subset -- each one forced a font
+% switch mid-line, and extractors drop the word gap across a font switch. That
+% is what produced "EngineerMay", "CA|(510)", "DynamoDBGithub".
+% Latin Modern is visually near-identical to Computer Modern, so the look holds.
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-6pt}]
+
+% Ensure PDF is machine-readable / ATS-parseable
+\pdfgentounicode=1
+
+%---- PARSING FIX 4 (Sept 12 2026, RESUME-STRATEGY section 28) ------------------
+% pdfTeX positions words with offsets instead of emitting space glyphs, and
+% threshold extractors drop the gap at every \textbf boundary ("PandasETL",
+% "aproductiontax"). This emits a real space character between words.
+\pdfinterwordspaceon
+
+%---- PARSING FIX 2 -----------------------------------------------------------
+% \nk = "no kern". Terminates TeX's implicit kern between two letters. Your bold
+% headings carried kerns of 96-131/1000 em, which threshold-based extractors read
+% as a SPACE -- producing "Co-F ounder", "A WS", "F rameworks", "T ools",
+% "T racker", "F undamentals". Note AWS broke in the headings but survived in
+% body text, so a spot check missed it entirely.
+\newcommand{\nk}{\kern0pt}
+
+%---- PARSING FIX 3 -----------------------------------------------------------
+% Text-font separator. Use \pipe instead of $|$ everywhere.
+\newcommand{\pipe}{\textbar{}}
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-3pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{#2} \\   % date BOLD: same font run as the title, so the
+                                     % column jump is not split by a \Tf switch
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+% One-line entry: title --- company on the left, date on the right. Use for roles
+% with no bullets, where the standard two-line \resumeSubheading would leave a
+% visible blank and its trailing \vspace{-7pt} would collide with the next heading.
+\newcommand{\resumeSubheadingOneLine}[3]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1 --- #2} & \textbf{#3} \\   % all bold: no font switch anywhere on the line
+    \end{tabular*}\vspace{-3pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \small\emph{#2} \\   % date must match #1's font AND SIZE. \small applies
+                                     % only inside its own cell, so an unsized #2 landed at
+                                     % normalsize -- a different font -> \Tf switch -> lost space.
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-7pt}}
+\begin{document}
+% Generated by tailor.py from bullets.yaml. Edit the bank, not this file.
+\begin{center}
+    \textbf{\Huge \scshape Shayan Poigai} \\ \vspace{2pt}
+    \small Fremont, CA \pipe{} (510) 738-8155 \pipe{} \href{mailto:spoigai21@gmail.com}{spoigai21@gmail.com} \pipe{} U.S. citizen \\ \vspace{2pt}
+    \small \href{https://shayanpoigai.dev/}{shayanpoigai.dev} \pipe{}
+    \href{https://www.linkedin.com/in/shayanpoigai/}{linkedin.com/in/shayanpoigai} \pipe{}
+    \href{https://github.com/spoigai21}{github.com/spoigai21}
+\end{center}
+
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Santa Clara University --- B.S. in Computer Science}{Expected December 2027}
+      {GPA: 3.9}{Available Summer 2027 (Fall 2027 term remaining)}
+      \resumeItemListStart
+        \resumeItem{\textbf{Relevant Coursework}: Operating Systems, Advanced C++, Advanced Algorithms, Data Structures \& Algorithms, Theory of Automata, Discrete Mathematics}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%----------EXPERIENCE----------
+\section{Work Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Software Engineering Intern}{June 2026 -- August 2026}
+      {HerbsPro}{}
+      \resumeItemListStart
+        \resumeItem{Built a Pandas \textbf{ETL pipeline} that normalized 150+ unstructured meeting notes into a fixed schema, extracting supplier terms into structured records.}
+        \resumeItem{Built a Python MCP server (FastMCP) as the only access path for LLM agents into a legacy MySQL WMS: read tools for live stock, write tools emitting split-shipment pick tickets instead of raw table mutations.}
+        \resumeItem{Cut MySQL query volume 60\% and product API p50 from 200\,ms to 90\,ms with a cache-aside Redis layer using event-driven invalidation across a 50,000+ SKU catalog.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Engineer}{May 2026 -- Present}
+      {Adorus}{}
+      \resumeItemListStart
+        \resumeItem{Built a \textbf{two-stage image-retrieval pipeline} (PyTorch, CLIP ViT-B/32) that crops queries to the worn-object region with YOLO11-pose (ONNX), moving the correct match from rank 3 to rank 1; inference runs in A\nk WS Lambda with catalog embeddings precomputed and ranked by cosine similarity in Postgres.}
+        \resumeItem{Shipped AI virtual try-on on a reference-conditioned Gemini model at \textasciitilde\$0.05/image, with measurement-driven prompting that parses per-item dimensions into true-to-life scale and physically accurate drape.}
+        \resumeItem{Built cookieless first-party analytics that counts every visitor (153 people and 794 page views in its first 20 days live) where GA4 cannot: only 32 of 153 accepted cookies, so GA4 saw roughly a fifth of real traffic.}
+        \resumeItem{Diagnosed a \textbf{production} checkout outage from one customer screenshot: an apex-only CORS allowlist made every POST from the www host return 403, which CloudFront rewrote into a 200 carrying HTML; traced it through nginx logs to 97 failed requests from 19 visitors and fixed it at the CDN and origin.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {AI/ML Research Assistant}{Dec 2025 -- June 2026}
+      {Santa Clara University}{}
+      \resumeItemListStart
+        \resumeItem{Analyzed 5,000+ scraped Twitter, Reddit, and YouTube posts with an NLP and \textbf{machine learning} pipeline comparing BERTopic, LDA, and NMF to measure sentiment toward LLMs as a therapeutic tool.}
+        \resumeItem{Co-author and primary writer of \emph{Public Perceptions of ChatGPT as a Therapist-Like Tool}, accepted at HI-\nk BI-\nk BI 2026 (ASONAM-collocated); proceedings forthcoming with Springer.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Lab Teaching Assistant (C++)}{Sept 2025 -- June 2026}
+      {Santa Clara University}{}
+      \resumeItemListStart
+        \resumeItem{Mentored 40+ students in C++ memory management, pointers, and object-oriented design, \textbf{debugging} logic and memory errors live with GDB.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%----------PROJECTS----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/spoigai21/internship-monitor}{Internship Monitor}} \pipe{} \emph{Python, SQLite, GitHub Actions, pytest}}{2026}
+          \resumeItemListStart
+            \resumeItem{Suppressed repeat alerts with a normalized employer-plus-title dedup key after finding \textasciitilde2,900 of 14,808 listings were reposts issued under new job IDs.}
+            \resumeItem{Co-built a Python job monitor tracking 106 companies across 17 job-board types; added the Simplify, Oracle, and SmartRecruiters parsers to a 308-test suite.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/tatertotbot/AWS-Inrix-2025}{Disease T\nk racker}} \pipe{} \emph{FastAPI, A\nk WS Bedrock, DynamoDB}}{Oct 2025}
+          \resumeItemListStart
+            \resumeItem{Built the FastAPI backend for a 6-person team: disease-metric endpoints over DynamoDB and a county risk-scoring endpoint calling Claude on A\nk WS Bedrock.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{\href{https://github.com/spoigai21/kuhn-quantum-poker}{Kuhn Poker vs Quantum}} \pipe{} \emph{Python, Qiskit, FastAPI, React}}{2026}
+          \resumeItemListStart
+            \resumeItem{Built a Kuhn poker AI whose bet and call probabilities come from a 12-parameter, 6-qubit variational circuit, optimized with COBYLA over 5 restarts to minimize exploitability across all 64 pure opponent strategies; verified on IBM hardware at 4,096 shots.}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%----------TECHNICAL SKILLS----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, SQL, JavaScript, C++, Java} \\
+     \textbf{F\nk rameworks \& T\nk ools}{: React.js, Node.js, Spring Boot, FastAPI, Docker (containers), Linux, Git, Qt, Vercel, CI/CD, Render, REST/RESTful APIs, Stripe} \\
+     \textbf{Cloud \& Data}{: A\nk WS (EC2, RDS, Bedrock, Cognito, S3, CloudFront, Lambda), PostgreSQL, MySQL, Redis, DynamoDB (NoSQL), ChromaDB} \\
+     \textbf{AI / ML}{: Machine Learning, NLP, computer vision, RAG, MCP, PyTorch, CLIP, vector embeddings, Ollama, OpenWebUI, NumPy, Pandas, Matplotlib, topic modeling (BERTopic, LDA, NMF)} \\
+     \textbf{Quantum}{: Qiskit, IBM Quantum} \\
+    }}
+ \end{itemize}
+
+\end{document}

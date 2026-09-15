@@ -1,0 +1,76 @@
+{
+  "company": "ATT",
+  "focus": [
+    "fullstack",
+    "data",
+    "ai"
+  ],
+  "weights": {
+    "python": 1,
+    "java": 1,
+    "javascript": 5,
+    "frontend": 1,
+    "data": 16,
+    "etl": 2,
+    "analytics": 4,
+    "ml": 4,
+    "cv": 1,
+    "ai": 15,
+    "genai": 1,
+    "agents": 1,
+    "reliability": 1,
+    "operations": 2,
+    "security": 1,
+    "performance": 2,
+    "automation": 3,
+    "optimization": 1,
+    "fullstack": 8
+  },
+  "languages": "Python, SQL, JavaScript, C++, Java",
+  "roles": {
+    "herbspro": [
+      "hp-etl",
+      "hp-mcp",
+      "hp-redis"
+    ],
+    "adorus": [
+      "ad-retrieval",
+      "ad-tryon-gemini",
+      "ad-analytics",
+      "ad-cors"
+    ],
+    "research": [
+      "rs-nlp",
+      "rs-paper"
+    ],
+    "ta": [
+      "ta-debug"
+    ]
+  },
+  "projects": {
+    "pr-monitor": [
+      "pm-dedup",
+      "pm-scale"
+    ],
+    "pr-disease": [
+      "pd-backend"
+    ],
+    "pr-kuhn": [
+      "pk-vqc"
+    ]
+  },
+  "added_vs_general": [
+    "ad-analytics",
+    "ad-cors",
+    "ad-tryon-gemini",
+    "pk-vqc",
+    "pr-kuhn"
+  ],
+  "removed_vs_general": [
+    "ad-platform",
+    "ad-s3",
+    "ad-tax",
+    "pr-social",
+    "ps-graph"
+  ]
+}

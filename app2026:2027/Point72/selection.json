@@ -1,0 +1,77 @@
+{
+  "company": "Point72",
+  "focus": [
+    "java",
+    "backend",
+    "performance",
+    "testing"
+  ],
+  "weights": {
+    "java": 10,
+    "sql": 1,
+    "data": 5,
+    "etl": 1,
+    "database": 2,
+    "ml": 4,
+    "research": 3,
+    "infra": 4,
+    "deployment": 5,
+    "reliability": 3,
+    "testing": 11,
+    "ci": 1,
+    "devtools": 2,
+    "performance": 10,
+    "automation": 2,
+    "oop": 1,
+    "quant": 8,
+    "event-driven": 1,
+    "backend": 8
+  },
+  "languages": "Java, Python, SQL, C++, JavaScript",
+  "roles": {
+    "herbspro": [
+      "hp-redis",
+      "hp-etl",
+      "hp-mcp"
+    ],
+    "adorus": [
+      "ad-backend-service",
+      "ad-tests",
+      "ad-tax",
+      "ad-lambda"
+    ],
+    "research": [
+      "rs-nlp",
+      "rs-paper"
+    ],
+    "ta": [
+      "ta-debug"
+    ]
+  },
+  "projects": {
+    "pr-monitor": [
+      "pm-scale",
+      "pm-dedup"
+    ],
+    "pr-kuhn": [
+      "pk-vqc"
+    ],
+    "pr-disease": [
+      "pd-backend"
+    ]
+  },
+  "added_vs_general": [
+    "ad-backend-service",
+    "ad-lambda",
+    "ad-tests",
+    "pk-vqc",
+    "pr-kuhn"
+  ],
+  "removed_vs_general": [
+    "ad-platform",
+    "ad-retrieval",
+    "ad-s3",
+    "pr-social",
+    "ps-graph"
+  ]
+}

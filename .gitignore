@@ -58,4 +58,7 @@ JOB-WORKLIST.md
 .listings-cache.json
 # Generated resume variants — regenerate with make_variants.py
 variants/
+# Pasted job descriptions for tailor.py and personal batch files
+jds/
+jobs.yaml
 # form driver is generic, keep it tracked

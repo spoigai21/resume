@@ -1,0 +1,70 @@
+{
+  "company": "Serval",
+  "focus": [
+    "backend",
+    "ai",
+    "agents"
+  ],
+  "weights": {
+    "python": 1,
+    "java": 1,
+    "javascript": 2,
+    "backend": 16,
+    "frontend": 1,
+    "data": 1,
+    "ai": 16,
+    "agents": 12,
+    "nlp": 1,
+    "cloud": 3,
+    "aws": 1,
+    "infra": 5,
+    "deployment": 3,
+    "reliability": 1,
+    "operations": 1,
+    "security": 1,
+    "fintech": 1,
+    "automation": 6,
+    "algorithms": 2,
+    "product": 6,
+    "distributed": 1
+  },
+  "languages": "Python, Java, JavaScript, C++, SQL",
+  "roles": {
+    "herbspro": [
+      "hp-mcp",
+      "hp-redis",
+      "hp-etl"
+    ],
+    "adorus": [
+      "ad-platform",
+      "ad-retrieval",
+      "ad-webhook",
+      "ad-tax"
+    ],
+    "research": [
+      "rs-paper",
+      "rs-nlp"
+    ],
+    "ta": [
+      "ta-debug"
+    ]
+  },
+  "projects": {
+    "pr-disease": [
+      "pd-backend"
+    ],
+    "pr-monitor": [
+      "pm-dedup",
+      "pm-scale"
+    ],
+    "pr-social": [
+      "ps-graph"
+    ]
+  },
+  "added_vs_general": [
+    "ad-webhook"
+  ],
+  "removed_vs_general": [
+    "ad-s3"
+  ]
+}

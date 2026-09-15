@@ -177,7 +177,7 @@ strategy doc already called it "the actually-hard part of the try-on."
 - **Stores zero customer photos** — a real privacy decision, worth raising unprompted
 - Auth-gated Spring Boot endpoints fronting the whole try-on stack
 
-### OPEN ITEM — verify before submitting
+### RESOLVED (Sept 14 2026) — Shayan confirmed the figure is real
 
 Confirm `~$0.05/image` is **Gemini's actual per-image cost**, not the cost range
 observed across all benchmarked candidates. The AllDetails PDF is ambiguous on
@@ -248,7 +248,8 @@ first version (the first version said "~23% who accept cookies"; the measured fi
 
 ### Analytics & privacy engineering (revised bullets — use these)
 
-- Built cookieless first-party analytics measuring 133 unique visitors and 725 page views (5.5 per person) over 30 days, using a daily-rotating salted SHA-256 of address and user agent — storing nothing on the visitor's device and never persisting the raw address
+- **Latest snapshot (Shayan's admin dashboard, Sept 14 2026 — site released ~Aug 25 2026, so ~20 days live):** **153 people, 794 page views (5.2 per person) in the last 30 days; 21% accepted cookies (32 of 153); 123 have not answered the banner; busiest day 2026-09-05 with 24 people / 163 views.** No orders or revenue yet — never imply sales. Use these numbers going forward; the 133/725/20%/110 figures below are the earlier snapshot.
+- (earlier snapshot) Built cookieless first-party analytics measuring 133 unique visitors and 725 page views (5.5 per person) over 30 days, using a daily-rotating salted SHA-256 of address and user agent — storing nothing on the visitor's device and never persisting the raw address
 - Captured 5× more visitors than the consent-gated stack: only 20% of visitors (26 of 133) accept cookies, so GA4 and session recording see roughly a fifth of reality. The first-party layer requires no banner and therefore counts everyone
 - Quantified the measurement gap explicitly — 110 of 133 visitors never answered the consent banner at all, which is the number that makes third-party analytics unreliable at this scale and justified building the first-party layer
 
@@ -296,7 +297,7 @@ Retained from the first version (not replaced by the revision):
 | Security | Decompression bomb (134 MB → 40 MB), X-Forwarded-For spoofing fix, IPv6 /64 abuse controls, magic-byte sniffing, CSP, least-privilege grants, fail-closed invariants |
 | Testing / quality / platform tooling | 590 tests, PIT mutation testing in CI, 3 custom CI gates (migration, diff secret scan, API contract), lint ratchet |
 | ML / applied AI | CLIP 512-d search, YOLO11-pose → ONNX crop, Lambda container deploy, try-on async jobs + credits + no photo persistence |
-| Data / analytics / privacy | Cookieless analytics (133 visitors, 20% consent, 5× coverage), funnel view, competitive-intel time-series (9 tables, 21 brands), Metabase |
+| Data / analytics / privacy | Cookieless analytics (153 people / 794 views in 30 days, 21% consent = 32 of 153, ~5× coverage), funnel view, competitive-intel time-series (9 tables, 21 brands), Metabase |
 | Full-stack / product | 92-module React storefront, 41 routes, 4 payment rails, preorders, returns via Shippo, structured data 0 → 3 rich-result types |
 | Payments / fintech | Stripe Checkout webhooks, Stripe Tax, 4 rails reconciling to one order, Stripe-mode mismatch guard |
 
@@ -312,7 +313,7 @@ APPLICATION-RESPONSES.md, application-answers.json, RESUME-STRATEGY.md):
 4. **Scope bullet:** "35 RESTful endpoints across 5 AWS services at ~$40/month" retired; the bullet now uses 24 bounded modules and 80 Flyway migrations applied live with zero downtime. AWS services in use: CloudFront, S3, EC2, RDS, Cognito, Lambda.
 5. **Migrations:** 80 versioned Flyway migrations (supersedes the old 9 vs 33).
 6. **Orders:** created by Stripe's checkout.session.completed webhook; Shippo carries return labels. The dormant state-machine bullet was rewritten to match.
-7. **Try-on:** unchanged — the ~$0.05/image Gemini figure is still an open verification item.
+7. **Try-on:** the ~$0.05/image Gemini figure was confirmed real by Shayan on Sept 14 2026.
 
 **Kept, not contradicted:** the rank 3 → rank 1, 0.42 → 0.72 and 0.014-band ablation, now attributed to the pose-crop stage.
 
@@ -408,3 +409,7 @@ During the Adorus store deployment, Claude Code migrated products from a local D
 | Quantum / research-y | Kuhn Poker (12-param VQC, 64-strategy exploitability objective, COBYLA restarts, IBM runtime path) |
 | C++ / systems / algorithms | Social Network (accurate wording above), CSCI164 algorithm coverage |
 | AI apps / cloud | Disease Tracker backend (Bedrock Claude endpoint) — team-labelled |
+
+## Confirmations (Sept 14 2026)
+
+Shayan confirmed as real: the ~$0.05/image try-on cost, the HerbsPro numbers (60% query volume, p50 200→90 ms, 50,000+ SKUs, 150+ notes), and the research-paper details. Adorus has had **no orders or revenue** yet (released ~Aug 25 2026); traffic snapshot is in the analytics section. Private codebases (Adorus, competitive intel, research, HerbsPro) cannot be shared — facts come from his written record only.

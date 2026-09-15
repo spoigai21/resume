@@ -1,0 +1,11 @@
+# Batch file for: python3 tailor.py --batch jobs.example.yaml
+# Each entry needs a company plus a jd file and/or focus tags. Paste JD text into
+# jds/<company>.txt (jds/ is gitignored if you add it to .gitignore).
+- company: Example-DataPlatform
+  jd: jds/example-data.txt
+- company: Example-Fullstack
+  focus: fullstack,frontend,testing
+  languages: JavaScript, Java, Python, SQL, C++
+- company: Example-Security
+  focus: security,appsec,backend
+  max_projects: 2
